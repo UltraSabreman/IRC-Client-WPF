@@ -16,60 +16,37 @@ using System.Threading;
 
 
 namespace IRC_Client_WPF {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-
     public partial class MainWindow : Window {
-        ConnectionHandler handler;
-        Connection freenode;
-        Connection rita;
-        Connection mirror;
-       
-
         public MainWindow() {
             InitializeComponent();
-            //this.Hide();
-
-            Util.AllocConsole();
-
-            handler = new ConnectionHandler();
-            freenode = handler.Connect("irc.freenode.net", 6667);
-            //rita = handler.Connect("irc.cat.pdx.edu", 6667);
-            //mirror = handler.Connect("localhost", 9090);
-            handler.onMessage += new EventHandler<Message>(grabData);
-            //handler.SendMessege(freenode, "USER " + "sab" + " 0 * :" + "someone" + "\r\n" + "NICK " + "sab" + "\r\n");
-            handler.SendMessege(freenode, "PASS 123456\r\n");
-            handler.SendMessege(freenode, "NICK sabreman2\r\n");
-            handler.SendMessege(freenode, "USER sabreman2 0 * :Andrey Byelogurov\r\n");
-       }
-
-
-
-        void grabData(object s, Message msg) {
-
-            //gotta sort by tab
-            if (msg.Command == "NOTICE") {
-                Util.print(msg.Prefix + "\t: " + msg.Params, ConsoleColor.Yellow);
-                printString(msg.Prefix + "\t: " + msg.Params);
-            } else if (msg.Command == "MOTD") {
-                Util.print(msg.Prefix + "\t: " + msg.Params, ConsoleColor.Cyan);
-                printString(msg.Prefix + "\t: " + msg.Params);
-            }
-
-            
-
-
+            ((App)Application.Current).registerWindow(this);
+            ChatBox.Document.Blocks.Clear();
         }
+        public void Write(string messege, Color c) {
+            ChatBox.Dispatcher.BeginInvoke(new Action(delegate() {
+                Paragraph paragraph = new Paragraph(new Run(messege));
 
-        private void printString(string s) {
-            ChatWindow.Dispatcher.BeginInvoke(new Action(delegate() {
-                ChatWindow.Document.Blocks.Add(new Paragraph(new Run(s)));
+                ChatBox.Document.Blocks.Add(paragraph);
+                ChatBox.ScrollToEnd();
             }));
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            Util.FreeConsole();
+            ((App)Application.Current).Exit();
+        }
+
+        private void SendButton_Click(object sender, RoutedEventArgs e) {
+            ((App)Application.Current).lol(new TextRange(InputBox.Document.ContentStart, InputBox.Document.ContentEnd).Text);
+            InputBox.Document.Blocks.Clear();
+        }
+
+        private void InputBox_KeyUp(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Enter) {
+                ((App)Application.Current).lol(new TextRange(InputBox.Document.ContentStart, InputBox.Document.ContentEnd).Text);
+                InputBox.Document.Blocks.Clear();
+
+            }
+            
         }
 
     }
