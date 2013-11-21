@@ -7,6 +7,8 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace IRC_Client_WPF {
@@ -50,10 +52,6 @@ namespace IRC_Client_WPF {
         }
 
         public async void SendMessege(Connection c, string msg) {
-            /*Thread tempThread = new Thread(new ThreadStart(delegate(Connection c) {
-
-
-            }));*/
             ASCIIEncoding encoding = new ASCIIEncoding();
             byte[] result = encoding.GetBytes(msg);
 
@@ -66,12 +64,18 @@ namespace IRC_Client_WPF {
             Connection curConnection = connections.Find(delegate(Connection c) {
                 return c.Listener == Thread.CurrentThread;
             });
+           
+            //SSL
+            /*string test = "";
+            SslStream currentStream = new SslStream(curConnection.Client.GetStream(), false, CertificateValidationCallback);
+            currentStream.AuthenticateAsClient(test, null, System.Security.Authentication.SslProtocols.Ssl3, false);*/
 
+            //Normal
             NetworkStream currentStream = curConnection.Client.GetStream();
 
             Int32 bytes = 1;
             while (bytes != 0) { //kills the listener when we D/C
-                if (currentStream.DataAvailable) {
+                try {
                     Byte [] data = new Byte [1024]; //buffer for message 1MB
                     bytes = currentStream.Read(data, 0, data.Length);
                     //recives the stream. Could get multiple messeges in one go, have to split them up.
@@ -83,6 +87,8 @@ namespace IRC_Client_WPF {
 
                         parseMessege(s);
                     }
+                } catch (System.IO.IOException s) {
+
                 }
 
                 //no need to poll all the time.
@@ -91,7 +97,15 @@ namespace IRC_Client_WPF {
 
             connections.Remove(curConnection);
         }
+        /*static bool CertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
+            if (sslPolicyErrors == SslPolicyErrors.None)
+                return true;
 
+            Console.WriteLine("Certificate error: {0}", sslPolicyErrors);
+
+            // Do not allow this client to communicate with unauthenticated servers. 
+            return false;
+        }*/
         private void parseMessege(string msg) {
             if (msg == null || msg == "") return;
 

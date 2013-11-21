@@ -18,7 +18,7 @@ namespace IRC_Client_WPF {
             NetworkEngine = new ConnectionHandler();
             wind = (MainWindow)MainWindow;
 
-            freenode = NetworkEngine.Connect("irc.freenode.net", 6667);
+            freenode = NetworkEngine.Connect("irc.freenode.net", 6697);
             NetworkEngine.onMessage += new EventHandler<Message>(grabData);
             NetworkEngine.SendMessege(freenode, "PASS 123456\r\n");
             NetworkEngine.SendMessege(freenode, "NICK sabreman2\r\n");
