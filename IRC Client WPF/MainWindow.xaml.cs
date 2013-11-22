@@ -17,36 +17,62 @@ using System.Threading;
 
 namespace IRC_Client_WPF {
     public partial class MainWindow : Window {
+        public delegate void stringDel(string s);
+        public stringDel SubmitText;
+
         public MainWindow() {
             InitializeComponent();
+            //TODO: fix coupling
             ((App)Application.Current).registerWindow(this);
             ChatBox.Document.Blocks.Clear();
+
+            TabItem test = Util.TrycloneElement<TabItem>(this.Freenode);
+            test.Name = "rita";
+            test.Header = "rita";
+            Tabs.Items.Add(test);
+
         }
-        public void Write(string messege, Color c) {
+
+        public void Write(chatLine line) {
             ChatBox.Dispatcher.BeginInvoke(new Action(delegate() {
-                Paragraph paragraph = new Paragraph(new Run(messege));
+                Paragraph paragraph = new Paragraph();
+
+                //TODO: Figure out what tab, server, and channel this messege goes to.
+                foreach (Tuple<string, SolidColorBrush> t in line.Line) {
+                    Run temp = new Run(t.Item1);
+                    if (t.Item2 == null)
+                        temp.Foreground = Brushes.Black;
+                    else
+                        temp.Foreground = t.Item2;
+
+                    paragraph.Inlines.Add(temp);
+                }
 
                 ChatBox.Document.Blocks.Add(paragraph);
+                //TODO: make this only fire if user is scrolled to the bottom already.
                 ChatBox.ScrollToEnd();
             }));
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            ((App)Application.Current).Exit();
+            //TODO: fix coupling
+            ((App)Application.Current).exit();
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e) {
-            ((App)Application.Current).lol(new TextRange(InputBox.Document.ContentStart, InputBox.Document.ContentEnd).Text);
+            if (SubmitText != null)
+                SubmitText(new TextRange(InputBox.Document.ContentStart, InputBox.Document.ContentEnd).Text);
+
             InputBox.Document.Blocks.Clear();
         }
 
         private void InputBox_KeyUp(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                ((App)Application.Current).lol(new TextRange(InputBox.Document.ContentStart, InputBox.Document.ContentEnd).Text);
-                InputBox.Document.Blocks.Clear();
+                if (SubmitText != null)
+                    SubmitText(new TextRange(InputBox.Document.ContentStart, InputBox.Document.ContentEnd).Text);
 
+                InputBox.Document.Blocks.Clear();
             }
-            
         }
 
     }

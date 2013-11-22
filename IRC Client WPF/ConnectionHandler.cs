@@ -109,6 +109,7 @@ namespace IRC_Client_WPF {
         private void parseMessege(string msg) {
             if (msg == null || msg == "") return;
 
+            //parses the messege with regex
             Regex rgx = new Regex(@"^(:(?<prefix>\S+) )?(?<command>\S+)( (?!:)(?<params>.+?))?( :(?<trail>.+))?$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
             Match match = rgx.Match(msg);
 

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Windows.Markup;
+using System.Xml;
+using System.IO;
 
 
 namespace IRC_Client_WPF {
@@ -23,17 +26,22 @@ namespace IRC_Client_WPF {
             Console.ForegroundColor = old;
         }
 
-        public static long ToInt(string addr) {
-            // careful of sign extension: convert to uint first;
-            // unsigned NetworkToHostOrder ought to be provided.
-            return (long)(uint)IPAddress.NetworkToHostOrder((int)IPAddress.Parse(addr).AddressFamily);
-        }
+        //From http://stackoverflow.com/questions/13951303/whats-the-easiest-way-to-clone-a-tabitem-in-wpf
+        public static T TrycloneElement<T>(T orig) {
+            try {
+                string s = XamlWriter.Save(orig);
 
-        public static string ToAddr(long address) {
-            return IPAddress.Parse(address.ToString()).ToString();
-            // This also works:
-            // return new IPAddress((uint) IPAddress.HostToNetworkOrder(
-            //    (int) address)).ToString();
+                StringReader stringReader = new StringReader(s);
+
+                XmlReader xmlReader = XmlTextReader.Create(stringReader, new XmlReaderSettings());
+                XmlReaderSettings sx = new XmlReaderSettings();
+
+                object x = XamlReader.Load(xmlReader);
+                return (T)x;
+            } catch {
+                return (T)((object)null);
+            }
+
         }
     }
 }
