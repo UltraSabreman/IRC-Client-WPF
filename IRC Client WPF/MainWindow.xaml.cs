@@ -26,10 +26,10 @@ namespace IRC_Client_WPF {
             ((App)Application.Current).registerWindow(this);
             ChatBox.Document.Blocks.Clear();
 
-            TabItem test = Util.TrycloneElement<TabItem>(this.Freenode);
+            /*TabItem test = Util.TrycloneElement<TabItem>(this.Freenode);
             test.Name = "rita";
             test.Header = "rita";
-            Tabs.Items.Add(test);
+            Tabs.Items.Add(test);*/
 
         }
 

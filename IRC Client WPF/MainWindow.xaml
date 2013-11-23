@@ -3,35 +3,48 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="490.652" Width="724.37" Closing="Window_Closing">
     <Grid>
-        <TabControl x:Name="Tabs" Margin="10">
-            <TabItem x:Name="Freenode" Header="Freenode">
+        <ListView HorizontalAlignment="Left" Height="415" Margin="24,15,0,0" VerticalAlignment="Top" Width="181">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="lol"/>
+                </GridView>
+            </ListView.View>
+            <Expander Header="mn,nm," HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Grid Background="#FFE5E5E5">
-                    <RichTextBox x:Name="InputBox" Margin="10,0,95,10" SpellCheck.IsEnabled="True" KeyUp="InputBox_KeyUp" Height="24" VerticalAlignment="Bottom">
-                        <FlowDocument>
-                            <Paragraph>
-                                <Run Text=""/>
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
-                    <ListView x:Name="NickList" Margin="0,10,10,39" HorizontalAlignment="Right" Width="117">
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <RichTextBox x:Name="ChatBox" Margin="10,10,132,39" VerticalScrollBarVisibility="Auto">
-                        <RichTextBox.Resources>
-                            <Style TargetType="{x:Type Paragraph}">
-                                <Setter Property="Margin" Value="0"/>
-                            </Style>
-                        </RichTextBox.Resources>
-                        <FlowDocument IsEnabled="False">
-                        </FlowDocument>
-                    </RichTextBox>
-                    <Button x:Name="SendButton" Content="Send" Margin="0,0,10,10" Click="SendButton_Click" HorizontalAlignment="Right" Width="80" Height="24" VerticalAlignment="Bottom"/>
+                    <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                 </Grid>
-            </TabItem>
-        </TabControl>
+            </Expander>
+            <Expander Header="Expander" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="Black">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                </Grid>
+            </Expander>
+            <Expander Header="Expander" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="Black">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                </Grid>
+            </Expander>
+        </ListView>
+        <RichTextBox x:Name="ChatBox" HorizontalAlignment="Left" Height="225" Margin="205,10,0,0" VerticalAlignment="Top" Width="396" IsReadOnly="True">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <ListView HorizontalAlignment="Left" Height="415" Margin="606,10,0,0" VerticalAlignment="Top" Width="100">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <RichTextBox x:Name="InputBox" HorizontalAlignment="Left" Height="20" Margin="10,430,0,0" VerticalAlignment="Top" Width="696">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
     </Grid>
 </Window>
