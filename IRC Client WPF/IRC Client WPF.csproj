@@ -57,8 +57,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConnectionHandler.cs" />
-    <Compile Include="CommandHandler.cs" />
+    <Compile Include="Channel.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>

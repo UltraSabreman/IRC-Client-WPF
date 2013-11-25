@@ -1,7 +1,6 @@
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\IRC Client WPF.exe.config
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\IRC Client WPF.exe
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\IRC Client WPF.pdb
-C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\IRC Client WPF.csprojResolveAssemblyReference.cache
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\MainWindow.baml
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\MainWindow.g.cs
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\App.g.cs
