@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Channel.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="TreeViewObject.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>

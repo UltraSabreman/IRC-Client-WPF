@@ -15,13 +15,11 @@ using System.Text.RegularExpressions;
 
 namespace IRC_Client_WPF {
     public class Server {
+        private MainWindow ui;
         private TcpClient connection;
         private NetworkStream nwStream;
         private Thread listner;
 
-        private string name;
-        private string adress;
-        private int port;
         private string nick;
         private string sessionPass;
         private string realname;
@@ -35,31 +33,29 @@ namespace IRC_Client_WPF {
         public delegate void chanCreated(Channel c);
         public event chanCreated OnChannelCreation;
 
+        public string name;
+        public string adress;
+        public int port;
 
-        public Server(string inName, string inAdress, int inPort = 6667)
-            : this(inAdress, inPort) {
-            name = inName;
-
-            Util.AllocConsole();
-        }
-
-        public Server(string inAdress, int inPort = 6667) {
-            adress = inAdress; port = inPort;
+        public Server(string inName, string inAdress, int inPort, MainWindow win) {
+            name = inName; adress = inAdress; port = inPort;
+            ui = win;
 
             Random test = new Random();
             sessionPass = test.Next().ToString();
-            realname = "Andrey b";
+            realname = "Testing Spaces here";
             nick = "sabreman2";
             mode = "0";
 
-            Channel main = new Channel(this, "");
-            channels.Add(main);
+            channels.Add(new Channel(this, ""));
 
             connection = new TcpClient(inAdress, inPort);
             nwStream = connection.GetStream();
 
             listner = new Thread(new ThreadStart(listen));
             listner.Start();
+
+            Util.AllocConsole();
         }
 
         public void disconnect() {
@@ -91,10 +87,7 @@ namespace IRC_Client_WPF {
 
                 foreach (string s in responseData) 
                     parseIncoming(s);
-                
-                    
-                //no need to poll all the time.
-                Thread.Sleep(10);
+
             }
             connected = false;
         }
@@ -122,12 +115,13 @@ namespace IRC_Client_WPF {
                 string Params = match.Groups ["params"].Value.TrimEnd(new char [] { '\n', '\r' });
                 string Trail = match.Groups ["trail"].Value.TrimEnd(new char [] { '\n', '\r' });
 
-                if (Command == "PING")
+                if (Command == "PING") {
                     sendString("PING :" + Trail + "\r\n");
-                else if (Command == "PRIVMSG") {
+                } else if (Command == "PRIVMSG") {
                     Channel target = channelByName(Params);
                     if (target != null) {
-                        target += (Prefix + ": " + Trail);
+                        string nick = Prefix.Split(new char [] { '!' }) [0];
+                        target += (DateTime.Now.TimeOfDay.ToString() + " " + nick + "| " + Trail);
                     }
 
                 } else if (Command == "JOIN") {
@@ -147,25 +141,36 @@ namespace IRC_Client_WPF {
             Match match = rgx.Match(s);
 
             if (match.Success) {
-                string command = match.Groups ["command"].Value.ToUpper();
-                string text = match.Groups ["text"].Value.TrimEnd(new char [] { '\n', '\r' });
+                string Command = match.Groups ["command"].Value.ToUpper();
+                string Text = match.Groups ["text"].Value.TrimEnd(new char [] { '\n', '\r' });
 
-                if (command == "") {
+                if (Command == "") {
                     Channel tarChan = channelByName(chanName);
                     if (tarChan != null) {
-                        sendString("PRIVMSG " + chanName + " :" + text + "\r\n");
-                        tarChan += "Sabreman : " + text; //TODO: fix me
+                        sendString("PRIVMSG " + chanName + " :" + Text + "\r\n");
+                        tarChan += "Sabreman : " + Text; //TODO: fix me
                     } else {
                         channels.First().addLine("Not a channel.");
                         return;
                     }
-                } else if (command == "JOIN") {
-                    sendString("JOIN " + text + "\r\n");
+                } else if (Command == "JOIN") {
+                    sendString("JOIN " + Text + "\r\n");
+                } else if (Command == "CONNECT") {
+                    string [] split = Text.Split(new char [] { ':' });;
+
+                    if (split.Length == 1)
+                        ui.newServer(Text, Text, 6667);
+                    else
+                        ui.newServer(Text, split [0], int.Parse(split [1]));
+                }else if (Command == "PART") {
+                    sendString("PART " + Text + "\r\n");
+                } else {
+                    channels.First().addLine("Bad Command");
                 }
             }
         }
 
-        private Channel channelByName(string name) {
+        public Channel channelByName(string name) {
             foreach (Channel c in channels)
                 if (c.channelName == name)
                     return c;
