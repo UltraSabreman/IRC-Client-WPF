@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="490.652" Width="724.37" Closing="Window_Closing">
     <Grid>
-        <TreeView x:Name="ServerList" HorizontalAlignment="Left" Margin="10,10,0,35" Width="132"/>
-        <RichTextBox x:Name="ChatBox" Margin="147,10,115,35" IsReadOnly="True">
+        <TreeView x:Name="UIServerList" HorizontalAlignment="Left" Margin="10,10,0,35" Width="132"/>
+        <RichTextBox x:Name="UIChatBox" Margin="147,10,115,35" IsReadOnly="True">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0"/>
@@ -16,8 +16,8 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <ListView x:Name="NickList" Margin="0,10,10,35" HorizontalAlignment="Right" Width="100"/>
-        <RichTextBox x:Name="InputBox" Margin="10,0,10,10" KeyUp="InputBox_KeyUp" Height="20" VerticalAlignment="Bottom">
+        <ListView x:Name="UINickList" Margin="0,10,10,35" HorizontalAlignment="Right" Width="100"/>
+        <RichTextBox x:Name="UIInputBox" Margin="10,0,10,10" KeyUp="InputBox_KeyUp" Height="20" VerticalAlignment="Bottom">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>

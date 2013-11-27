@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
+
 //TOOD: proper public/provate shiz.
 namespace IRC_Client_WPF {
-    public class Channel {
+    public class Channel : TreeViewItem {
         public List<string> nicks = new List<string>();
         public List<string> buffer = new List<string>(); //make this a tuple to perserve formatting OR write a function in the UI to parse the formatting out.
         public Server server;
@@ -22,6 +24,7 @@ namespace IRC_Client_WPF {
         public Channel(Server s, string name) {
             server = s;
             channelName = name;
+            Header = name;
         }
 
         //will this work, who knows?

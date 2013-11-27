@@ -11,11 +11,13 @@ using System.Security.Cryptography.X509Certificates;
 //others
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 
 
 namespace IRC_Client_WPF {
-    public class Server {
+    public partial class Server : TreeViewItem {
         private MainWindow ui;
+        private List<Channel> channels = new List<Channel>();
         private TcpClient connection;
         private NetworkStream nwStream;
         private Thread listner;
@@ -28,18 +30,20 @@ namespace IRC_Client_WPF {
         private bool connected;
         ////////////////////////////////////
         public bool IsConnected { get {return connected;} }
-        public List<Channel> channels = new List<Channel>();
 
         public delegate void chanCreated(Channel c);
         public event chanCreated OnChannelCreation;
 
-        public string name;
+        public Channel serverChannel;
+
+        public string serverName;
         public string adress;
         public int port;
 
         public Server(string inName, string inAdress, int inPort, MainWindow win) {
-            name = inName; adress = inAdress; port = inPort;
-            ui = win;
+            serverName = inName; adress = inAdress; port = inPort;
+            Header = serverName;
+            ui = win; 
 
             Random test = new Random();
             sessionPass = test.Next().ToString();
@@ -47,12 +51,13 @@ namespace IRC_Client_WPF {
             nick = "sabreman2";
             mode = "0";
 
-            channels.Add(new Channel(this, ""));
+            serverChannel = new Channel(this, "");
 
             connection = new TcpClient(inAdress, inPort);
             nwStream = connection.GetStream();
 
             listner = new Thread(new ThreadStart(listen));
+            listner.SetApartmentState(ApartmentState.STA);
             listner.Start();
 
             Util.AllocConsole();
@@ -125,8 +130,17 @@ namespace IRC_Client_WPF {
                     }
 
                 } else if (Command == "JOIN") {
+                    foreach (Channel c in channels)
+                        if (c.channelName == Params)
+                            return;
+
                     Channel newChan = new Channel(this, Params);
                     channels.Add(newChan);
+
+                    this.Dispatcher.BeginInvoke(new Action(delegate() {
+                            Items.Add(newChan);
+                    }));
+
                     if (OnChannelCreation != null)
                         OnChannelCreation(newChan);
                 } 
