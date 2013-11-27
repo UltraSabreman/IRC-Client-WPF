@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Markup;
 using System.Xml;
 using System.IO;
+using System.Text.RegularExpressions;
 
 
 namespace IRC_Client_WPF {
@@ -25,6 +26,20 @@ namespace IRC_Client_WPF {
             Console.WriteLine(str);
             Console.ForegroundColor = old;
         }
+
+        /*public static Dictionary<string, string> regexMatch(string tar, string regex, RegexOptions option) {
+            Regex rgx = new Regex(regex, option);
+            Match match = rgx.Match(tar);
+
+            if (match.Success) {
+                var tempD = new Dictionary<string, string>();
+                
+                foreach (GroupCollection g in match.Groups)
+                    tempD[g.V]
+
+            }
+
+        }*/
 
         //From http://stackoverflow.com/questions/13951303/whats-the-easiest-way-to-clone-a-tabitem-in-wpf
         public static T TrycloneElement<T>(T orig) {

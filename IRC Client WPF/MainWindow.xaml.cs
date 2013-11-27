@@ -19,34 +19,33 @@ using System.Threading;
 // (i am brilliant!.... at avoiding stupid mistakes).
 namespace IRC_Client_WPF {
     public partial class MainWindow : Window {
-        List<Server> serverList = new List<Server>();
-
-
+        Server MainBuffer;
         public MainWindow() {
             InitializeComponent();
-            newServer("Freenode", "irc.freenode.net", 6667);
+            MainBuffer = new Server("Chat Client", "", 0, this);
+            MainBuffer.OnChannelCreation += new EventHandler<ChannelCreatedEvent>(channelCreated);
+            MainBuffer.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
+            UIServerList.Items.Add(MainBuffer);
+
+            createServer("Freenode", "irc.freenode.net", 6667);
             UIServerList.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(changeChannel);
-            //UIServerList.Items = new ItemCollection();
+
         }
 
-        public void update(Channel c) {
+        public void channelUpdated(object o, ChannelUpdate e) {
             //TODO: add colors and other stuff based on what's on the line?
             // (mybie make it a tuple like we had it before?);
-            UIChatBox.Dispatcher.BeginInvoke(new Action(delegate() {
-                if (getSelectedChannel() != c) {
+            if (getSelectedChannel() == e.channel) {
 
-                } else {
-                    UIChatBox.Document.Blocks.Clear();
-
-                    foreach (string s in c.buffer) {
-                        Paragraph paragraph = new Paragraph(new Run(s));
-                        UIChatBox.Document.Blocks.Add(paragraph);
-                    }
+                foreach (string s in e.channel.newBuffer) {
+                    Paragraph paragraph = new Paragraph(new Run(s));
+                    UIChatBox.Document.Blocks.Add(paragraph);
                 }
+                e.channel.sync();
+            }
           
-                //TODO: make this only fire if user is scrolled to the bottom already.
-                UIChatBox.ScrollToEnd();
-            }));
+            //TODO: make this only fire if user is scrolled to the bottom already.
+            UIChatBox.ScrollToEnd();
         }
 
         public void changeChannel(object o, RoutedPropertyChangedEventArgs<Object> e) {
@@ -54,40 +53,30 @@ namespace IRC_Client_WPF {
 
 
             Channel c = getSelectedChannel();
+            c.sync();
             foreach (string s in c.buffer) {
                 Paragraph paragraph = new Paragraph(new Run(s));
                 UIChatBox.Document.Blocks.Add(paragraph);
             }
+
+            UIChatBox.ScrollToEnd();
         }
 
         
-        public void createdChannel(Channel c) {
-            c.OnUpdate += new Channel.update(update);
-
-            /*c.Dispatcher.BeginInvoke(new Action(delegate() {
-            //foreach (Server s in UIServerList.Items)
-             //       if (s == c.server) {
-                        //dont re-add the channel if it already exhists.
-                        //if (s.Items.Contains(c))
-                        //   return;
-                
-                        Server s = 
-                        c.server.Items.Add(c);
-              //      }
-                }));*/
-            Console.Beep();
+        public void channelCreated(object o, ChannelCreatedEvent e) {
+            e.channel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
         }
 
 
-        public void newServer(string Name, string Adress, int port) {
+        public void createServer(string Name, string Adress, int port) {
             Server temp = new Server(Name, Adress, port, this);
-            temp.OnChannelCreation += new Server.chanCreated(createdChannel);
+            temp.OnChannelCreation += new EventHandler<ChannelCreatedEvent>(channelCreated);
+            temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
 
-            serverList.Add(temp);
             UIServerList.Items.Add(temp);            
         }
 
-        public Channel getSelectedChannel() {
+        private Channel getSelectedChannel() {
             object selected = UIServerList.SelectedItem;
             if (selected == null) return null;
 
@@ -98,14 +87,18 @@ namespace IRC_Client_WPF {
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            foreach (Server s in serverList)
+            foreach (Server s in UIServerList.Items)
                 s.disconnect();
         }
 
         private void InputBox_KeyUp(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
                 Channel cur = getSelectedChannel();
-                cur.server.parseOutgoing(cur.channelName, new TextRange(UIInputBox.Document.ContentStart, UIInputBox.Document.ContentEnd).Text);
+
+                if (cur != null)
+                    cur.parseOutgoing(new TextRange(UIInputBox.Document.ContentStart, UIInputBox.Document.ContentEnd).Text);
+                else
+                    MainBuffer.serverChannel.parseOutgoing(new TextRange(UIInputBox.Document.ContentStart, UIInputBox.Document.ContentEnd).Text);
 
                 UIInputBox.Document.Blocks.Clear();
             }
