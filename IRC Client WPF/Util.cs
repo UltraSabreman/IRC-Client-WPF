@@ -27,19 +27,20 @@ namespace IRC_Client_WPF {
             Console.ForegroundColor = old;
         }
 
-        /*public static Dictionary<string, string> regexMatch(string tar, string regex, RegexOptions option) {
+        public static Dictionary<string, string> regexMatch(string tar, string regex, RegexOptions option) {
+            var tempD = new Dictionary<string, string>();
+
             Regex rgx = new Regex(regex, option);
             Match match = rgx.Match(tar);
 
             if (match.Success) {
-                var tempD = new Dictionary<string, string>();
-                
-                foreach (GroupCollection g in match.Groups)
-                    tempD[g.V]
+                foreach (string groupName in rgx.GetGroupNames())
+                    tempD [groupName] = match.Groups [groupName].Value;
+            } else
+                throw new Exception("Match Failed");
 
-            }
-
-        }*/
+            return tempD;
+        }
 
         //From http://stackoverflow.com/questions/13951303/whats-the-easiest-way-to-clone-a-tabitem-in-wpf
         public static T TrycloneElement<T>(T orig) {

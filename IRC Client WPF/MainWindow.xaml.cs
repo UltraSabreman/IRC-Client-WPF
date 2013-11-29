@@ -13,10 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Text.RegularExpressions;
 
-//TODO: DO NOT recareate any gui elemnts for each sderver/channel. Simply
-// fill the nicklist and UIChatBox with stuff from the current server-channel combo.
-// (i am brilliant!.... at avoiding stupid mistakes).
 namespace IRC_Client_WPF {
     public partial class MainWindow : Window {
         Server MainBuffer;
@@ -32,32 +30,65 @@ namespace IRC_Client_WPF {
 
         }
 
-        public void channelUpdated(object o, ChannelUpdate e) {
-            //TODO: add colors and other stuff based on what's on the line?
-            // (mybie make it a tuple like we had it before?);
-            if (getSelectedChannel() == e.channel) {
+        public Paragraph formatLine(Channel c, string line) {
+            Paragraph temp = new Paragraph();
+            try {
+                var rDict = Util.regexMatch(line, @"^(?<time>\d{2,2}:\d{2,2}:\d{2,2} (?:AM|PM)\s+)(?<nick>\w*): (?<text>.*)$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
+                string times = String.Format("{0,-" + (12 + c.longestNick()).ToString() + " }", rDict["time"]);
+                TextBlock time = new TextBlock(new Run(times));
+                time.Foreground = Brushes.DarkGray;
+                temp.Inlines.Add(time);
+
+                TextBlock nick = new TextBlock(new Run(rDict["nick"]));
+                nick.Foreground = Brushes.Blue;
+                temp.Inlines.Add(nick);
+
+
+                TextBlock sep = new TextBlock(new Run(": "));
+                Grid.SetColumn(sep, 2);
+                temp.Inlines.Add(sep);
+
+                TextBlock text = new TextBlock(new Run(rDict["text"]));
+                text.Foreground = Brushes.Green;
+                temp.Inlines.Add(text);
+            } catch {
+                temp.Inlines.Add(new Run(line));
+            }
+
+            return temp;
+        }
+
+        public void channelUpdated(object o, ChannelUpdate e) {
+            if (getSelectedChannel() == e.channel) {
+                foreach (string s in e.channel.nicks)
+                    UINickList.Items.Add(s);
                 foreach (string s in e.channel.newBuffer) {
-                    Paragraph paragraph = new Paragraph(new Run(s));
-                    UIChatBox.Document.Blocks.Add(paragraph);
+                    try {
+                        UIChatBox.Document.Blocks.Add(formatLine(e.channel, s));
+                    } catch (Exception ex) {
+                        
+                    }
                 }
+
                 e.channel.sync();
             }
           
             //TODO: make this only fire if user is scrolled to the bottom already.
-            UIChatBox.ScrollToEnd();
+            //UIChatBox.ScrollToEnd();
         }
 
         public void changeChannel(object o, RoutedPropertyChangedEventArgs<Object> e) {
             UIChatBox.Document.Blocks.Clear();
-
+            UINickList.Items.Clear();
 
             Channel c = getSelectedChannel();
+            foreach (string s in c.nicks)
+                UINickList.Items.Add(s);
+
             c.sync();
-            foreach (string s in c.buffer) {
-                Paragraph paragraph = new Paragraph(new Run(s));
-                UIChatBox.Document.Blocks.Add(paragraph);
-            }
+            foreach (string s in c.buffer)
+                UIChatBox.Document.Blocks.Add(formatLine(c, s));
 
             UIChatBox.ScrollToEnd();
         }

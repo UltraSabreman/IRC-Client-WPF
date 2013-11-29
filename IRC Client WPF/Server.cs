@@ -70,8 +70,6 @@ namespace IRC_Client_WPF {
                 sendString("USER " + nick + " " + mode + " * :" + realname + "\r\n");
 
                 listen();
-
-                
             } else 
                 local = true;
             
@@ -135,21 +133,21 @@ namespace IRC_Client_WPF {
 
             Console.WriteLine(msg);
             //parses the messege with regex
-            Regex rgx = new Regex(@"^(:(?<prefix>\S+) )?(?<command>\S+)( (?!:)(?<params>.+?))?( :(?<trail>.+))?$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
-            Match match = rgx.Match(msg);
+            try {
+                var rDict = Util.regexMatch(msg, @"^(:(?<prefix>\S+) )?(?<command>\S+)( (?!:)(?<params>.+?))?( :(?<trail>.+))?$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
-            if (match.Success) {
-                string Prefix = match.Groups ["prefix"].Value;
-                string Command = match.Groups ["command"].Value.ToUpper();
-                string Params = match.Groups ["params"].Value.TrimEnd(new char [] { '\n', '\r' });
-                string Trail = match.Groups ["trail"].Value.TrimEnd(new char [] { '\n', '\r' });
+                string Prefix = rDict["prefix"];
+                string Command = rDict["command"].ToUpper();
+                string Params = rDict["params"].TrimEnd("\r\n".ToCharArray());
+                string Trail = rDict["trail"].TrimEnd("\r\n".ToCharArray());
 
                 try {
                     InCommandDict [Command](Prefix, Params, Trail);
                 } catch (Exception e) {
                     serverChannel.addLine(msg);
                 }
-            }
+                
+            } catch { }
             
         }
 

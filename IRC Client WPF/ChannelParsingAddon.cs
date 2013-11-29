@@ -29,7 +29,7 @@ namespace IRC_Client_WPF {
                 server.sendString("JOIN " + Text + "\r\n");
             };
             OutCommandDict ["CONNECT"] = (Text) => {
-                string [] split = Text.Split(new char [] { ':' }); ;
+                string [] split = Text.Split(":".ToCharArray());
 
                 if (split.Length == 1)
                     server.ui.createServer(Text, Text, 6667);

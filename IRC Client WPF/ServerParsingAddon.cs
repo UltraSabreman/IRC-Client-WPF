@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Text.RegularExpressions;
+
 
 namespace IRC_Client_WPF {
     public partial class Server : TreeViewItem {
@@ -17,9 +19,26 @@ namespace IRC_Client_WPF {
             InCommandDict ["PRIVMSG"] = (Prefix, Params, Trail) => {
                 Channel target = channelByName(Params);
                 if (target != null) {
-                    string nick = Prefix.Split(new char [] { '!' }) [0];
-                    target += (DateTime.Now.ToString("T") + " " + nick + ": " + Trail);
+                    string nick = Prefix.Split("!".ToCharArray()) [0];
+                    target += (DateTime.Now.ToString("hh:mm:ss tt") + "\t" + nick + ": " + Trail);
+                    //colors: ♥04o♥08k♥09a♥11y♥12!♥
                 }
+            };
+
+            InCommandDict["RPL_NAMREPLY"] = InCommandDict [353.ToString()] = (Prefix, Params, Trail) => {
+                try {
+                    var rDict = Util.regexMatch(Params, @"^(?<mynick>.*) (?<type>=|\*|@) (?<channel>#\w*)$", RegexOptions.Compiled);
+                    Channel c = channelByName(rDict ["channel"]);
+
+                    foreach (string s in Trail.Split(" ".ToCharArray()))
+                        c.nicks.Add(s);
+                } catch { }
+            };
+
+            InCommandDict ["RPL_ENDOFNAMES"] = InCommandDict [366.ToString()] = (Prefix, Params, Trail) => {
+                Channel c = channelByName(Params);
+
+                c.nicks.Sort();
             };
 
             InCommandDict ["JOIN"] = (Prefix, Params, Trail) => {

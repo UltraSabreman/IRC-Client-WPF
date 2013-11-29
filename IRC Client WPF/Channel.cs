@@ -29,12 +29,11 @@ namespace IRC_Client_WPF {
         public void parseOutgoing(string s) {
             if (s == "" || s == null) return;
 
-            Regex rgx = new Regex(@"^(/(?<command>\S+) )?(?<text>.+)$", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
-            Match match = rgx.Match(s);
+            try {
+                var rDict = Util.regexMatch(s, @"^(/(?<command>\S+) )?(?<text>.+)$", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
-            if (match.Success) {
-                string Command = match.Groups ["command"].Value.ToUpper();
-                string Text = match.Groups ["text"].Value.TrimEnd(new char [] { '\n', '\r' });
+                string Command = rDict["command"].ToUpper();
+                string Text = rDict["text"].TrimEnd("\n\r".ToCharArray());
 
                 if (String.IsNullOrEmpty(Command) && s.StartsWith("/")) {
                     server.serverChannel.addLine("Invalid Command");
@@ -46,7 +45,17 @@ namespace IRC_Client_WPF {
                 } catch (Exception e) {
                     server.serverChannel.addLine("Invalid Command");
                 }
+                
+            } catch { }
+        }
+
+        public int longestNick() {
+            int l = 0;
+            foreach (string s in nicks) {
+                if (s.Length > l)
+                    l = s.Length;
             }
+            return l;
         }
 
         public static Channel operator +(Channel c, string s) {
