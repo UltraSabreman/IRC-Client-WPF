@@ -39,26 +39,21 @@ namespace IRC_Client_WPF {
 					Channel c = channelByName("#" + Params.Split("#".ToCharArray()) [1]);
 
 					c.nicks.Sort();
-					Util.print("sdsf");
 				};
 
 				InCommandDict ["JOIN"] = (Prefix, Params, Trail) => {
-					//this.Dispatcher.BeginInvoke(new Action(() => {
+					foreach (Channel c in Items)
+						if (c.channelName == Params) {
+							return;
+							//TODO: channel exists.
+						}
 
-						foreach (Channel c in Items)
-							if (c.channelName == Params) {
-								return;
-								//TODO: channel exists.
-							}
+					Channel newChan = new Channel(this, Params);
 
-						Channel newChan = new Channel(this, Params);
+					Items.Add(newChan);
 
-						Items.Add(newChan);
-
-						if (OnChannelCreation != null)
-							OnChannelCreation(this, new ChannelCreatedEvent(newChan));
-					//}));
-
+					if (OnChannelCreation != null)
+						OnChannelCreation(this, new ChannelCreatedEvent(newChan));
 				};
         }
     }

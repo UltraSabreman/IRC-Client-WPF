@@ -26,10 +26,8 @@ namespace IRC_Client_WPF {
         private string realname;
         private string mode;
 
-        private bool connected;
-
         ////////////////////////////////////
-        public bool IsConnected { get {return connected;} }
+		public bool IsConnected { get; private set; }
 
         public event EventHandler<ChannelCreatedEvent> OnChannelCreation;
 
@@ -40,7 +38,7 @@ namespace IRC_Client_WPF {
         public int port;
 
         public bool local;
-
+		Thread t;
         public Server(string inName, string inAdress, int inPort, MainWindow win) {
             serverName = inName; address = inAdress; port = inPort;
             Header = serverName;
@@ -62,14 +60,13 @@ namespace IRC_Client_WPF {
                 connection.ReceiveTimeout = 1;
                 nwStream = connection.GetStream();
 
-                connected = true;
+				IsConnected = true;
                 local = false;
 
                 sendString("PASS " + sessionPass + "\r\n");
                 sendString("NICK " + nick + "\r\n");
                 sendString("USER " + nick + " " + mode + " * :" + realname + "\r\n");
-
-				var t = Task.Factory.StartNew(() => listen());
+				listen();
             } else 
                 local = true;
             
@@ -110,12 +107,13 @@ namespace IRC_Client_WPF {
         private async void listen() {
             int bytes = 1;
             while (bytes != 0) { //kills the listener when we D/C
-				Byte [] data = new Byte [5000];
+				Byte [] data = new Byte [1024];
 
                 try {
 					if (nwStream.DataAvailable)
 						bytes = await nwStream.ReadAsync(data, 0, data.Length);
                 } catch (ObjectDisposedException e) {
+					Util.print(Name + ": Server Stream Closer", ConsoleColor.Red);
                     break;
                 }
 
@@ -127,7 +125,7 @@ namespace IRC_Client_WPF {
 							parseIncoming(s);
 				}
             }
-            connected = false;
+			IsConnected = false;
         }
 
 		
