@@ -104,6 +104,7 @@ namespace IRC_Client_WPF {
                 return;
             }
 
+
         }
 
         private async void listen() {
