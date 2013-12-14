@@ -41,8 +41,8 @@ namespace IRC_Client_WPF {
                 }
 
                 try {
-                    OutCommandDict [Command](Text);
-                } catch (Exception e) {
+                    OutCommandDict[Command](Text);
+                } catch (ArgumentOutOfRangeException e) {
                     server.serverChannel.addLine("Invalid Command");
                 }
                 

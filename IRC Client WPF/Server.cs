@@ -69,7 +69,7 @@ namespace IRC_Client_WPF {
                 sendString("NICK " + nick + "\r\n");
                 sendString("USER " + nick + " " + mode + " * :" + realname + "\r\n");
 
-                listen();
+				var t = Task.Factory.StartNew(() => listen());
             } else 
                 local = true;
             
@@ -107,27 +107,29 @@ namespace IRC_Client_WPF {
         }
 
         private async void listen() {
-            Int32 bytes = 1;
+            int bytes = 1;
             while (bytes != 0) { //kills the listener when we D/C
-                Byte [] data = new Byte [5000];
+				Byte [] data = new Byte [5000];
 
                 try {
-                    //TODO: make this read variable length stuff. Also make it faster.
-                    bytes = await nwStream.ReadAsync(data, 0, data.Length);
+					if (nwStream.DataAvailable)
+						bytes = await nwStream.ReadAsync(data, 0, data.Length);
                 } catch (ObjectDisposedException e) {
                     break;
                 }
 
-                //recives the stream. Could get multiple messeges in one go, have to split them up.
-                string [] responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes).Split(new string [] { "\r\n" }, StringSplitOptions.None);
+				if (data != null) {
+					string [] responseData = System.Text.Encoding.UTF8.GetString(data, 0, bytes).Split(new string [] { "\r\n" }, StringSplitOptions.None);
 
-                foreach (string s in responseData) 
-                    parseIncoming(s);
-
+					foreach (string s in responseData)
+						if (!String.IsNullOrEmpty(s) && s[0] != '\0')
+							parseIncoming(s);
+				}
             }
             connected = false;
         }
 
+		
         public void parseIncoming(string msg) {
             if (msg == null || msg == "") return;
 
