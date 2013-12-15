@@ -70,6 +70,9 @@ namespace IRC_Client_WPF {
 
         public void channelUpdated(object o, ChannelUpdate e) {
 			//TODO: make me efficent
+
+			bool shouldScroll = UIChatBox.VerticalOffset + UIChatBox.ViewportHeight >= UIChatBox.ExtentHeight;
+
             if (getSelectedChannel() == e.channel) {
 
 				UINickList.Items.Clear();
@@ -86,10 +89,8 @@ namespace IRC_Client_WPF {
 
                 e.channel.sync();
             }
-          
-			UIChatBox.Scrol
-            //TODO: make this only fire if user is scrolled to the bottom already.
-            //UIChatBox.ScrollToEnd();
+
+			if (shouldScroll) UIChatBox.ScrollToEnd();
         }
 
         public void changeChannel(object o, RoutedPropertyChangedEventArgs<Object> e) {

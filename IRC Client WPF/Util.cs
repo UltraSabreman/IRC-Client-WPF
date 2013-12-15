@@ -85,5 +85,4 @@ namespace IRC_Client_WPF {
         }
     }
 
-	
 }
