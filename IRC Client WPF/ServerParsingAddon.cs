@@ -39,6 +39,7 @@ namespace IRC_Client_WPF {
 					Channel c = channelByName("#" + Params.Split("#".ToCharArray()) [1]);
 
 					c.nicks.Sort();
+					c.updateLongestNick();
 				};
 
 				InCommandDict ["JOIN"] = (Prefix, Params, Trail) => {

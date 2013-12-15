@@ -31,32 +31,40 @@ namespace IRC_Client_WPF {
             UIServerList.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(changeChannel);
         }
 
+		bool flop = true;
         public Paragraph formatLine(Channel c, string line) {
             Paragraph temp = new Paragraph();
+			
             try {
                 var rDict = Util.regexMatch(line, @"^(?<time>\d{2,2}:\d{2,2}:\d{2,2} (?:AM|PM)\s+)(?<nick>\w*): (?<text>.*)$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
-                string times = String.Format("{0,-" + (12 + c.longestNick()).ToString() + " }", rDict["time"]);
+                string times = String.Format("{0,-" + (12 + c.LongestNick).ToString() + " }", rDict["time"]);
                 TextBlock time = new TextBlock(new Run(times));
                 time.Foreground = Brushes.DarkGray;
+				time.Background = flop ? Brushes.LightGray : Brushes.White;
                 temp.Inlines.Add(time);
 
                 TextBlock nick = new TextBlock(new Run(rDict["nick"]));
                 nick.Foreground = Brushes.Blue;
+				nick.Background = flop ? Brushes.LightGray : Brushes.White;
                 temp.Inlines.Add(nick);
 
 
                 TextBlock sep = new TextBlock(new Run(": "));
+				sep.Background = flop ? Brushes.LightGray : Brushes.White;
                 Grid.SetColumn(sep, 2);
                 temp.Inlines.Add(sep);
 
                 TextBlock text = new TextBlock(new Run(rDict["text"]));
-                text.Foreground = Brushes.Green;
+				text.Background = flop ? Brushes.LightGray : Brushes.White;
+				text.Foreground = Brushes.Green;
+				text.TextWrapping = TextWrapping.Wrap;
                 temp.Inlines.Add(text);
+
             } catch {
                 temp.Inlines.Add(new Run(line));
             }
-
+			flop = !flop;
             return temp;
         }
 
@@ -79,27 +87,30 @@ namespace IRC_Client_WPF {
                 e.channel.sync();
             }
           
+			UIChatBox.Scrol
             //TODO: make this only fire if user is scrolled to the bottom already.
             //UIChatBox.ScrollToEnd();
         }
 
         public void changeChannel(object o, RoutedPropertyChangedEventArgs<Object> e) {
-            UIChatBox.Document.Blocks.Clear();
-            UINickList.Items.Clear();
+			UIChatBox.Document.Blocks.Clear();
+			UINickList.Items.Clear();
 
-            Channel c = getSelectedChannel();
-            foreach (string s in c.nicks)
-                UINickList.Items.Add(s);
+			Channel c = getSelectedChannel();
+			if (c == null) return;
+			foreach (string s in c.nicks)
+				UINickList.Items.Add(s);
 
-            c.sync();
-            foreach (string s in c.buffer)
-                UIChatBox.Document.Blocks.Add(formatLine(c, s));
+			c.sync();
+			foreach (string s in c.buffer)
+				UIChatBox.Document.Blocks.Add(formatLine(c, s));
 
-            UIChatBox.ScrollToEnd();
+			UIChatBox.ScrollToEnd();
         }
 
-        
         public void channelCreated(object o, ChannelCreatedEvent e) {
+			//UIServerList.SelectedValuePath = e.channel.DisplayMemberPath;
+			//Util.SetSelectedItem(ref UIServerList, e.channel);
             e.channel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
         }
 
@@ -154,6 +165,8 @@ namespace IRC_Client_WPF {
 				temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
 
 				UIServerList.Items.Add(temp);
+				//Util.SetSelectedItem(ref UIServerList, temp);
+
 			} catch (System.Net.Sockets.SocketException) {
 				MessageBox.Show("Error: Invalid server adress.", "Invalid Server Adress", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
@@ -180,6 +193,8 @@ namespace IRC_Client_WPF {
 				temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
 
 				UIServerList.Items.Add(temp);
+				//Util.SetSelectedItem(ref UIServerList, temp);
+
 			} catch (System.Net.Sockets.SocketException) {
 				MessageBox.Show("Error: Invalid server adress.", "Invalid Server Adress", MessageBoxButton.OK, MessageBoxImage.Error);
 			}

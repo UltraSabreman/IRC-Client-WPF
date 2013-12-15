@@ -14,6 +14,8 @@ namespace IRC_Client_WPF {
         public List<string> newBuffer = new List<string>();
         public Server server;
         
+		public int LongestNick = 0;
+
         public string channelName;
 
         ////////////////////////////////
@@ -49,13 +51,13 @@ namespace IRC_Client_WPF {
             } catch { }
         }
 
-        public int longestNick() {
+        public void updateLongestNick() {
             int l = 0;
             foreach (string s in nicks) {
                 if (s.Length > l)
                     l = s.Length;
             }
-            return l;
+			LongestNick = l;
         }
 
         public static Channel operator +(Channel c, string s) {
