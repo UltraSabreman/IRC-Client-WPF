@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 //networking
 using System.Net;
 using System.Net.Sockets;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
+//using System.Net.Security; ///do SSL connections later.
+//using System.Security.Cryptography.X509Certificates;
 //others
 using System.Threading;
 using System.Text.RegularExpressions;
@@ -16,82 +16,89 @@ using System.IO;
 
 
 namespace IRC_Client_WPF {
+	public class ServerInfo {
+		public string Name = "";
+		public string Address = "";
+		public int Port = 0;
+		public List<string> Channels = new List<string>();
+
+		public string Nick = "";
+		public string RealName = "";
+		public string UserName = "";
+		public string UserMode = "";
+	}
+
     public partial class Server : TreeViewItem {
         public MainWindow ui;
         private TcpClient connection;
         private NetworkStream nwStream;
-
-        private string nick;
-        private string sessionPass;
-        private string realname;
-        private string mode;
+		public ServerInfo info;
 
         ////////////////////////////////////
 		public bool IsConnected { get; private set; }
-
         public event EventHandler<ChannelCreatedEvent> OnChannelCreation;
-
         public Channel serverChannel;
 
-        public string serverName;
-        public string address;
-        public int port;
 
-        public bool local;
-		Thread t;
+		public Server(ServerInfo s, MainWindow win) {
+			info = s; ui = win;
+
+			initServer();
+			foreach (string channel in info.Channels) {
+				sendString("JOIN " + channel + "\r\n");
+			}
+		}
+
         public Server(string inName, string inAdress, int inPort, MainWindow win) {
-            serverName = inName; address = inAdress; port = inPort;
-            Header = serverName;
             ui = win;
+			info = new ServerInfo();
 
-            PopulateInDict();
+			info.Name = inName;
+			info.Address = inAdress;
+			info.Port = inPort;
 
-            //TODO: get user data form somewhere
-            Random test = new Random();
-            sessionPass = test.Next().ToString();
-            realname = "Testing Spaces here";
-            nick = "sabreman2";
-            mode = "0";
+			//TODO: get user info with dialog box.
+			info.Nick = "sabreman_test";
+			info.UserName = info.Nick;
+			info.RealName = "My Real Name";
+			info.UserMode = "0";
 
-            serverChannel = new Channel(this, "null");
-
-            if (!String.IsNullOrEmpty(address)) {
-                connection = new TcpClient(inAdress, inPort);
-                connection.ReceiveTimeout = 1;
-                nwStream = connection.GetStream();
-
-				IsConnected = true;
-                local = false;
-
-                sendString("PASS " + sessionPass + "\r\n");
-                sendString("NICK " + nick + "\r\n");
-                sendString("USER " + nick + " " + mode + " * :" + realname + "\r\n");
-				listen();
-            } else 
-                local = true;
-            
-            
-            Util.AllocConsole();
+			initServer();
         }
 
-        public void disconnect() {
-            if (!local) {
-                nwStream.Close();
-                nwStream.Dispose();
+		private void initServer() {
+			PopulateInDict();
 
-                connection.Close();
-            }
+			//TODO: get user data form somewhere
+			Random getNewPass = new Random();
+			serverChannel = new Channel(this, info.Name);
+			Header = serverChannel.Header;
+			serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(chanUpdate);
 
+			connection = new TcpClient(info.Address, info.Port);
+			connection.ReceiveTimeout = 2000;
+			nwStream = connection.GetStream();
+
+			IsConnected = true;
+
+			sendString("PASS " + getNewPass.Next().ToString() + "\r\n");
+			sendString("NICK " + info.Nick + "\r\n");
+			sendString("USER " + info.UserName + " " + info.UserMode + " * :" + info.RealName + "\r\n");
+
+			listen();
+		}
+
+        public ServerInfo disconnect() {
+            nwStream.Close();
+            nwStream.Dispose();
+
+            connection.Close();
+
+			return info;
             //TODO: more stuff here, ie: write channles and buffers to file.
         }
 
         public async void sendString(string s) {
-            //if this is the main buffer, we dont actualy want to send anything...
-            if (local) {
-                parseIncoming(s);
-                return;
-            }
-
             UTF8Encoding encoding = new UTF8Encoding();
             byte[] result = encoding.GetBytes(s);
 
@@ -104,13 +111,14 @@ namespace IRC_Client_WPF {
 
         }
 
+		//TODO: handle timeouts.
         private async void listen() {
             int bytes = 1;
             while (bytes != 0) { //kills the listener when we D/C
 				Byte [] data = new Byte [1024];
 
                 try {
-					if (nwStream.DataAvailable)
+					//if (nwStream.DataAvailable)
 						bytes = await nwStream.ReadAsync(data, 0, data.Length);
                 } catch (ObjectDisposedException e) {
 					Util.print(Name + ": Server Stream Closer", ConsoleColor.Red);
@@ -151,6 +159,10 @@ namespace IRC_Client_WPF {
             } catch { }
             
         }
+
+		private void chanUpdate(object o, ChannelUpdate e) {
+			//Header = info.Name + " (" + serverChannel.newBuffer.Count.ToString() + ")";
+		}
 
         public Channel channelByName(string name) {
             if (name == "null")

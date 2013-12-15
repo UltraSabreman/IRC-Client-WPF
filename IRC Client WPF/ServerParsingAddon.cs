@@ -52,6 +52,9 @@ namespace IRC_Client_WPF {
 
 					Items.Add(newChan);
 
+					if (!info.Channels.Contains(Params))
+						info.Channels.Add(Params);
+
 					if (OnChannelCreation != null)
 						OnChannelCreation(this, new ChannelCreatedEvent(newChan));
 				};

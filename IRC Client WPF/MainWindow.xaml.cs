@@ -17,17 +17,18 @@ using System.Text.RegularExpressions;
 
 namespace IRC_Client_WPF {
     public partial class MainWindow : Window {
-        Server MainBuffer;
+        //Server MainBuffer;
+		DataReader reader = new DataReader();
+
         public MainWindow() {
             InitializeComponent();
-            MainBuffer = new Server("Chat Client", "", 0, this);
-            MainBuffer.OnChannelCreation += new EventHandler<ChannelCreatedEvent>(channelCreated);
-            MainBuffer.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
-            UIServerList.Items.Add(MainBuffer);
 
-            createServer("Freenode", "irc.freenode.net", 6667);
+			reader.deserialize();
+			foreach (ServerInfo si in reader.Servers) {
+				createServer(si);
+			}
+
             UIServerList.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(changeChannel);
-
         }
 
         public Paragraph formatLine(Channel c, string line) {
@@ -60,9 +61,13 @@ namespace IRC_Client_WPF {
         }
 
         public void channelUpdated(object o, ChannelUpdate e) {
+			//TODO: make me efficent
             if (getSelectedChannel() == e.channel) {
+
+				UINickList.Items.Clear();
                 foreach (string s in e.channel.nicks)
                     UINickList.Items.Add(s);
+
                 foreach (string s in e.channel.newBuffer) {
                     try {
                         UIChatBox.Document.Blocks.Add(formatLine(e.channel, s));
@@ -98,15 +103,6 @@ namespace IRC_Client_WPF {
             e.channel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
         }
 
-
-        public void createServer(string Name, string Adress, int port) {
-            Server temp = new Server(Name, Adress, port, this);
-            temp.OnChannelCreation += new EventHandler<ChannelCreatedEvent>(channelCreated);
-            temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
-
-            UIServerList.Items.Add(temp);            
-        }
-
         private Channel getSelectedChannel() {
             object selected = UIServerList.SelectedItem;
             if (selected == null) return null;
@@ -118,8 +114,13 @@ namespace IRC_Client_WPF {
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            foreach (Server s in UIServerList.Items)
-                s.disconnect();
+			reader.Servers.Clear();
+			foreach (Server s in UIServerList.Items) {
+				reader.Servers.Add(s.disconnect());
+			}
+
+			//TODO: dump + serialise options.
+			reader.serialize();
         }
 
         private void InputBox_KeyUp(object sender, KeyEventArgs e) {
@@ -128,12 +129,60 @@ namespace IRC_Client_WPF {
 
                 if (cur != null)
                     cur.parseOutgoing(new TextRange(UIInputBox.Document.ContentStart, UIInputBox.Document.ContentEnd).Text);
-                else
-                    MainBuffer.serverChannel.parseOutgoing(new TextRange(UIInputBox.Document.ContentStart, UIInputBox.Document.ContentEnd).Text);
+				//TODO: redirect intput to channel that textbox is attached to?
 
                 UIInputBox.Document.Blocks.Clear();
             }
         }
 
+		private void UIAddServer_Click(object sender, RoutedEventArgs e) {
+			createServer(UIServerName.Text);
+			UIServerName.Text = "";
+		}
+
+		private void UIServerName_KeyUp(object sender, KeyEventArgs e) {
+			if (e.Key == Key.Enter) {
+				createServer(UIServerName.Text);
+				UIServerName.Text = "";
+			}
+		}
+
+		private void createServer(ServerInfo si) {
+			try {
+				Server temp = new Server(si, this);
+				temp.OnChannelCreation += new EventHandler<ChannelCreatedEvent>(channelCreated);
+				temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
+
+				UIServerList.Items.Add(temp);
+			} catch (System.Net.Sockets.SocketException) {
+				MessageBox.Show("Error: Invalid server adress.", "Invalid Server Adress", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
+		private void createServer(string name) {
+			if (!String.IsNullOrEmpty(name)) {
+				string servername = name;
+
+				int port = 6667;
+				string address = "";
+				string [] stuff = servername.Split(":".ToCharArray());
+
+				if (stuff.Length == 2)
+					port = int.Parse(stuff [1]);
+				address = stuff [0];
+
+				createServer(address, address, port);
+			}
+		}
+		public void createServer(string Name, string Adress, int port) {
+			try {
+				Server temp = new Server(Name, Adress, port, this);
+				temp.OnChannelCreation += new EventHandler<ChannelCreatedEvent>(channelCreated);
+				temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
+
+				UIServerList.Items.Add(temp);
+			} catch (System.Net.Sockets.SocketException) {
+				MessageBox.Show("Error: Invalid server adress.", "Invalid Server Adress", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
     }
 }

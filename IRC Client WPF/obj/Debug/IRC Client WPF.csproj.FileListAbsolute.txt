@@ -11,3 +11,6 @@ C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\IRC Clien
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\IRC Client WPF.exe
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\IRC Client WPF.pdb
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\IRC Client WPF.csprojResolveAssemblyReference.cache
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\Newtonsoft.Json.xml

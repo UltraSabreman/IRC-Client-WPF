@@ -1,0 +1,17 @@
+{
+  "Servers": [
+    {
+      "Name": "Freenode",
+      "Address": "irc.freenode.net",
+      "Port": 6667,
+      "Channels": [
+        "#sabretest"
+      ],
+      "Nick": "sabreman_test",
+      "RealName": "My Real Name",
+      "UserName": "sabreman_test",
+      "UserMode": "0"
+    }
+  ],
+  "Options": {}
+}

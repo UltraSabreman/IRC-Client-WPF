@@ -66,6 +66,9 @@ namespace IRC_Client_WPF {
         public void addLine(string s) {
             newBuffer.Add(s);
             Header = channelName + " (" + newBuffer.Count.ToString() + ")";
+			if (channelName == server.info.Name)
+				server.Header = Header;
+
             if (OnUpdate != null)
                 OnUpdate(this, new ChannelUpdate(this));
         }
@@ -76,6 +79,8 @@ namespace IRC_Client_WPF {
 
             newBuffer.Clear();
             Header = channelName;
+			if (channelName == server.info.Name)
+				server.Header = Header;
         }
 
        

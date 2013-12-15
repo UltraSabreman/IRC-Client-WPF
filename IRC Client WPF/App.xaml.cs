@@ -10,6 +10,8 @@ using System.Windows.Media;
 namespace IRC_Client_WPF {
     public partial class App : Application {
         public App() {
+			Util.AllocConsole();
+
         }
     }
 }
