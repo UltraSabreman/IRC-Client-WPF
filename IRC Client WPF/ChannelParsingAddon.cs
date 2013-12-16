@@ -11,14 +11,16 @@ namespace IRC_Client_WPF {
         private Dictionary<string, Action<string>> OutCommandDict = new Dictionary<string, Action<string>>();
 
         private void PopulateOutDict() {
-            OutCommandDict [""] = (Text) => {
-                server.sendString("PRIVMSG " + channelName + " :" + Text + "\r\n");
-                addLine("Sabreman : " + Text); //TODO: fix me
-            };
-            OutCommandDict ["JOIN"] = (Text) => {
+			OutCommandDict ["PRIVMSG"] = (Text) => {
 				if (isServChan()) return;
+                server.sendString("PRIVMSG " + channelName + " :" + Text + "\r\n");
+				server.parseIncoming(":" + server.info.Nick + "!local PRIVMSG " + channelName + " :" + Text + "\r\n");
+            };
+
+            OutCommandDict ["JOIN"] = (Text) => {
                 server.sendString("JOIN " + Text + "\r\n");
             };
+
             OutCommandDict ["CONNECT"] = (Text) => {
                 string [] split = Text.Split(":".ToCharArray());
 
@@ -27,12 +29,32 @@ namespace IRC_Client_WPF {
                 else
                     server.ui.createServer(Text, split [0], int.Parse(split [1]));
             };
+
             OutCommandDict ["PART"] = (Text) => {
 				if (isServChan()) return;
-                server.sendString("PART " + Text + "\r\n");
+
+				if (String.IsNullOrEmpty(Text))
+					server.sendString("PART " + channelName + "\r\n");
+				else
+					server.sendString("PART " + Text + "\r\n");
+
+				isConnected = false;
             };
+
+			OutCommandDict ["CLOSE"] = (Text) => {
+				if (isServChan()) return;
+
+				if (isConnected)
+					OutCommandDict ["PART"](Text);
+
+				server.closeChannel(this);
+			};
         }
 
+		/// <summary>
+		/// Checks to see if the current channel is the server's buffer (ie: where all server messeges get dumped)
+		/// </summary>
+		/// <returns>True if this channel is the server buffer..</returns>
 		private bool isServChan() {
 			if (channelName == server.info.Name) {
 				server.parseIncoming("PRIVMSG " + channelName + " :Has to be a Channel\r\n"); //TODO: find a more approriate messge type.

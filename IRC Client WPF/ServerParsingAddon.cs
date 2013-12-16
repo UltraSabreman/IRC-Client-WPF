@@ -48,8 +48,10 @@ namespace IRC_Client_WPF {
 				InCommandDict ["JOIN"] = (Prefix, Params, Trail) => {
 					foreach (Channel c in Items)
 						if (c.channelName == Params) {
+							if (!c.isConnected)
+								c.isConnected = true;
+
 							return;
-							//TODO: channel exists.
 						}
 
 					Channel newChan = new Channel(this, Params);

@@ -39,8 +39,7 @@ namespace IRC_Client_WPF {
         public event EventHandler<ChannelCreatedEvent> OnChannelCreation;
         public Channel serverChannel;
 
-
-		public Server(ServerInfo s, MainWindow win) {
+		public Server(ServerInfo s, MainWindow win) {		
 			info = s; ui = win;
 
 			initServer();
@@ -73,7 +72,6 @@ namespace IRC_Client_WPF {
 			Random getNewPass = new Random();
 			serverChannel = new Channel(this, info.Name);
 			Header = serverChannel.Header;
-			serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(chanUpdate);
 
 			connection = new TcpClient(info.Address, info.Port);
 			connection.ReceiveTimeout = 2000;
@@ -97,6 +95,11 @@ namespace IRC_Client_WPF {
 			return info;
             //TODO: more stuff here, ie: write channles and buffers to file.
         }
+
+		public void closeChannel(Channel c) {
+			if (Items.Contains(c))
+				Items.Remove(c);
+		}
 
         public async void sendString(string s) {
             UTF8Encoding encoding = new UTF8Encoding();
@@ -161,10 +164,6 @@ namespace IRC_Client_WPF {
 			}
             
         }
-
-		private void chanUpdate(object o, ChannelUpdate e) {
-			//Header = info.Name + " (" + serverChannel.newBuffer.Count.ToString() + ")";
-		}
 
         public Channel channelByName(string name) {
             if (name == "null")

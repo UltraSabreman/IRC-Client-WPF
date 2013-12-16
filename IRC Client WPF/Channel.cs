@@ -21,9 +21,11 @@ namespace IRC_Client_WPF {
         public Server server;
 		public int LongestNick = 0;
         public string channelName;
+
+		public bool isConnected = false;
+
 		private bool flop = false; //determiens background for chat box.
 
-        ////////////////////////////////
         public event EventHandler<ChannelUpdate> OnUpdate;
 
         public Channel(Server s, string name) {
@@ -32,6 +34,13 @@ namespace IRC_Client_WPF {
             Header = name;
             PopulateOutDict();
 			loadBacklog();
+			isConnected = true;
+
+			//this trips when we init the first server (since it starts before the UI).
+			try { server.ExpandSubtree(); } catch (NullReferenceException e) { }
+
+
+			IsSelected = true;
         }
 
 		public void loadBacklog() {
@@ -81,30 +90,32 @@ namespace IRC_Client_WPF {
 			}
 		}
 
-        public void parseOutgoing(string s) {
-            if (s == "" || s == null) return;
+		public void parseOutgoing(string s) {
+			if (s == "" || s == null) return;
 
-            try {
-                var rDict = Util.regexMatch(s, @"^(/(?<command>\S+) )?(?<text>.+)$", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+			if (s.StartsWith("/")) {
+				try {
+					var rDict = Util.regexMatch(s, @"^(/(?<command>\S+)) (?<text>.+)?$", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
-                string Command = rDict["command"].ToUpper();
-                string Text = rDict["text"].TrimEnd("\n\r".ToCharArray());
+					string Command = rDict ["command"].ToUpper();
+					string Text = rDict ["text"].TrimEnd("\n\r".ToCharArray());
 
-                if (String.IsNullOrEmpty(Command) && s.StartsWith("/")) {
-                    server.serverChannel.addLine("Invalid Command");
-                    return;
-                }
+					try {
+						if (String.IsNullOrEmpty(Command))
+							OutCommandDict [Text](null);
+						else
+							OutCommandDict [Command](Text);
+					} catch (KeyNotFoundException e) {
 
-                try {
-                    OutCommandDict[Command](Text);
-                } catch (ArgumentOutOfRangeException e) {
-                    server.serverChannel.addLine("Invalid Command");
-                }
-                
-            } catch (RegexMatchFailedException) {
-				Util.print("Failed Msg Parse", ConsoleColor.DarkGreen);
-			}
-        }
+						server.serverChannel.addLine("Invalid Command");
+					}
+				} catch (RegexMatchFailedException) {
+					Util.print("Failed Msg Parse", ConsoleColor.DarkGreen);
+				}
+
+			} else
+				OutCommandDict ["PRIVMSG"](s);
+		}
 
         public void updateLongestNick() {
             int l = 0;

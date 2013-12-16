@@ -120,8 +120,7 @@ namespace IRC_Client_WPF {
 				temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
 
 				UIServerList.Items.Add(temp);
-				//Util.SetSelectedItem(ref UIServerList, temp);
-
+				temp.IsSelected = true;
 			} catch (System.Net.Sockets.SocketException) {
 				MessageBox.Show("Error: Invalid server adress.", "Invalid Server Adress", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
@@ -148,7 +147,7 @@ namespace IRC_Client_WPF {
 				temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
 
 				UIServerList.Items.Add(temp);
-				//Util.SetSelectedItem(ref UIServerList, temp);
+				temp.IsSelected = true;
 
 			} catch (System.Net.Sockets.SocketException) {
 				MessageBox.Show("Error: Invalid server adress.", "Invalid Server Adress", MessageBoxButton.OK, MessageBoxImage.Error);
