@@ -41,7 +41,7 @@ namespace IRC_Client_WPF {
                 foreach (string groupName in rgx.GetGroupNames())
                     tempD [groupName] = match.Groups [groupName].Value;
             } else
-                throw new Exception("Match Failed");
+                throw new RegexMatchFailedException();
 
             return tempD;
         }

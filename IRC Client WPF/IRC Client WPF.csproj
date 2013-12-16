@@ -67,6 +67,7 @@
     <Compile Include="ChannelParsingAddon.cs" />
     <Compile Include="DataReader.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="IRCOptions.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="ServerParsingAddon.cs" />

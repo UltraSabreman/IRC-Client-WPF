@@ -32,7 +32,10 @@ namespace IRC_Client_WPF {
 
 						foreach (string s in Trail.Split(" ".ToCharArray()))
 							c.nicks.Add(s);
-					} catch { }
+					} catch (RegexMatchFailedException e) {
+						Util.print("Failed NickParse", ConsoleColor.DarkGreen);
+					}
+					
 				};
 
 				InCommandDict ["RPL_ENDOFNAMES"] = InCommandDict [366.ToString()] = (Prefix, Params, Trail) => {

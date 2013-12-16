@@ -5,18 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows;
+using System.IO;
 
 //TOOD: proper public/provate shiz.
 namespace IRC_Client_WPF {
     public partial class Channel : TreeViewItem {
         public List<string> nicks = new List<string>();
-        public List<string> buffer = new List<string>();
-        public List<string> newBuffer = new List<string>();
-        public Server server;
-        
-		public int LongestNick = 0;
+		public List<string> changedBuffer = new List<string>();
+		public FlowDocument buffer = new FlowDocument();
 
+		public int newMesseges = 0;
+        public Server server;
+		public int LongestNick = 0;
         public string channelName;
+		private bool flop = false; //determiens background for chat box.
 
         ////////////////////////////////
         public event EventHandler<ChannelUpdate> OnUpdate;
@@ -26,7 +31,55 @@ namespace IRC_Client_WPF {
             channelName = name;
             Header = name;
             PopulateOutDict();
+			loadBacklog();
         }
+
+		public void loadBacklog() {
+			string logPath = "logs/" + channelName + ".txt";
+			if (File.Exists(logPath)) {
+				try {
+					//TODO: figure out how to read backwards.
+					StreamReader r = new StreamReader(logPath);
+					//r.BaseStream.Position = r.BaseStream.Length;
+					int numOfLines = 10;
+					
+					Paragraph temp = new Paragraph();
+
+					string test = r.ReadToEnd();
+					r.Close();
+					string [] lol = test.Split("\n".ToCharArray());
+
+					if (numOfLines > lol.Length)
+						foreach (string s in lol)
+							temp.Inlines.Add(new Run(s));
+					else
+						for (int i = lol.Length - numOfLines; i < lol.Length; i++)
+							temp.Inlines.Add(new Run(lol[i]));
+
+
+					buffer.Blocks.Add(temp);
+					
+				} catch (AccessViolationException e) {
+					Util.print("ERROR: Log reading failed for " + channelName, ConsoleColor.Red);					
+				}
+			}
+		}
+
+		public void dumpLine(string whatToWrite) {
+			string logPath = "logs/" + channelName + ".txt";
+			if (!Directory.Exists("logs"))
+				Directory.CreateDirectory("logs");
+			if (!File.Exists(logPath)) 
+				File.CreateText(logPath);
+			
+			try {
+				StreamWriter fs = new StreamWriter(logPath, true, new ASCIIEncoding());
+				fs.WriteLine(whatToWrite);
+				fs.Close();
+			} catch (AccessViolationException e) {
+				Util.print("ERROR: Log writing failed for " + channelName, ConsoleColor.Red);
+			}
+		}
 
         public void parseOutgoing(string s) {
             if (s == "" || s == null) return;
@@ -48,7 +101,9 @@ namespace IRC_Client_WPF {
                     server.serverChannel.addLine("Invalid Command");
                 }
                 
-            } catch { }
+            } catch (RegexMatchFailedException) {
+				Util.print("Failed Msg Parse", ConsoleColor.DarkGreen);
+			}
         }
 
         public void updateLongestNick() {
@@ -66,21 +121,61 @@ namespace IRC_Client_WPF {
         }
 
         public void addLine(string s) {
-            newBuffer.Add(s);
-            Header = channelName + " (" + newBuffer.Count.ToString() + ")";
+			//TODO: highlight our name if mentioned.
+
+			buffer.Blocks.Add(formatLine(s));
+			changedBuffer.Add(s);
+            Header = channelName + " (" + (++newMesseges).ToString() + ")";
 			if (channelName == server.info.Name)
 				server.Header = Header;
 
             if (OnUpdate != null)
                 OnUpdate(this, new ChannelUpdate(this));
+
+			dumpLine(s);
         }
 
-        public void sync() {
-            foreach (string s in newBuffer)
-                buffer.Add(s);
+		private Paragraph formatLine(string line) {
+			Paragraph temp = new Paragraph();
+			try {
+				Brush color = flop ? Brushes.LightGray : Brushes.White;
+				flop = !flop;
 
-            newBuffer.Clear();
+				var rDict = Util.regexMatch(line, @"^(?<time>\d{2,2}:\d{2,2}:\d{2,2} (?:AM|PM)\s+)(?<nick>\w*): (?<text>.*)$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+
+				string times = String.Format("{0,-" + (12 + LongestNick).ToString() + " }", rDict ["time"]);
+				TextBlock time = new TextBlock(new Run(times));
+				time.Foreground = Brushes.DarkGray;
+				time.Background = flop ? Brushes.LightGray : Brushes.White;
+				temp.Inlines.Add(time);
+
+				TextBlock nick = new TextBlock(new Run(rDict ["nick"]));
+				nick.Foreground = Brushes.Blue;
+				nick.Background = flop ? Brushes.LightGray : Brushes.White;
+				temp.Inlines.Add(nick);
+
+
+				TextBlock sep = new TextBlock(new Run(": "));
+				sep.Background = flop ? Brushes.LightGray : Brushes.White;
+				Grid.SetColumn(sep, 2);
+				temp.Inlines.Add(sep);
+
+				TextBlock text = new TextBlock(new Run(rDict ["text"]));
+				text.Background = flop ? Brushes.LightGray : Brushes.White;
+				text.Foreground = Brushes.Green;
+				text.TextWrapping = TextWrapping.Wrap;
+				temp.Inlines.Add(text);
+
+			} catch {
+				temp.Inlines.Add(new Run(line));
+			}
+			return temp;
+		}
+
+        public void sync() {
+			newMesseges = 0;
             Header = channelName;
+			changedBuffer.Clear();
 			if (channelName == server.info.Name)
 				server.Header = Header;
         }

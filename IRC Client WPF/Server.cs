@@ -152,11 +152,13 @@ namespace IRC_Client_WPF {
 
                 try {
                     InCommandDict [Command](Prefix, Params, Trail);
-                } catch (Exception e) {
+                } catch (KeyNotFoundException e) {
                     serverChannel.addLine(msg);
                 }
-                
-            } catch { }
+
+			} catch (RegexMatchFailedException e) {
+				Util.print("Failed Msg Parse", ConsoleColor.DarkGreen);
+			}
             
         }
 

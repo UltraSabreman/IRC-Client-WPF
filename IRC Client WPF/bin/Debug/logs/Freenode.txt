@@ -1,0 +1,401 @@
+LOL U SUK  @)#)$@)#:leguin.freenode.net NOTICE * :*** Looking up your hostname...
+:leguin.freenode.net NOTICE * :*** Checking Ident
+:leguin.freenode.net NOTICE * :*** Found your hostname
+:leguin.freenode.net NOTICE * :*** No Ident response
+:leguin.freenode.net 001 sabreman_test :Welcome to the freenode Internet Relay Chat Network sabreman_test
+:leguin.freenode.net 002 sabreman_test :Your host is leguin.freenode.net[130.239.18.172/6667], running version ircd-seven-1.1.3
+:leguin.freenode.net 003 sabreman_test :This server was created Mon Dec 31 2012 at 22:37:58 CET
+:leguin.freenode.net 004 sabreman_test leguin.freenode.net ircd-seven-1.1.3 DOQRSZaghilopswz CFILMPQSbcefgijklmnopqrstvz bkloveqjfI
+:leguin.freenode.net 005 sabreman_test CHANTYPES=# EXCEPTS INVEX CHANMODES=eIbq,k,flj,CFLMPQScgimnprstz CHANLIMIT=#:120 PREFIX=(ov)@+ MAXLIST=bqeI:100 MODES=4 NETWORK=freenode KNOCK STATUSMSG=@+ CALLERID=g :are supported by this server
+:leguin.freenode.net 005 sabreman_test CASEMAPPING=rfc1459 CHARSET=ascii NICKLEN=16 CHANNELLEN=50 TOPICLEN=390 ETRACE CPRIVMSG CNOTICE DEAF=D MONITOR=100 FNC TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: :are supported by this server
+:leguin.freenode.net 005 sabreman_test EXTBAN=$,arxz WHOX 
+CLIENTVER=3.0 SAFELIST ELIST=CTU :are supported by this server
+:leguin.freenode.net 251 sabreman_test :There are 206 users and 81301 invisible on 28 servers
+:leguin.freenode.net 252 sabreman_test 30 :IRC Operators online
+:leguin.freenode.net 253 sabreman_test 10 :unknown connection(s)
+:leguin.freenode.net 254 sabreman_test 53540 :channels formed
+:leguin.freenode.net 255 sabreman_test :I have 6421 clients and 1 servers
+:leguin.freenode.net 265 sabreman_test 6421 11356 :Current local users 6421, max 11356
+:leguin.freenode.net 266 sabreman_test 81507 94669 :Current global users 81507, max 94669
+:leguin.freenode.net 250 sabreman_test :Highest connection count: 11357 (11356 clients) (2374026 connections received)
+:leguin.freenode.net 375 sabreman_test :- leguin.freenode.net Message of the Day - 
+:leguin.freenode.net 372 sabreman_test :- Welcome to leguin.freenode.net in Ume?, Sweden, EU! Thanks to
+:leguin.freenode.net 372 sabreman_test :- the Academic Computer Club at Ume? University for sponsoring
+:le
+guin.freenode.net 372 sabreman_test :- this server!
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- LE GUIN, URSULA K. (1929-) Born in Berkeley, California,
+:leguin.freenode.net 372 sabreman_test :- Ursula Le Guin is an american author primarily known for
+:leguin.freenode.net 372 sabreman_test :- her Science Fiction and Fantasy. She has been awarded the
+:leguin.freenode.net 372 sabreman_test :- Hugo and Nebula awards, and is best known for her Earthsea
+:leguin.freenode.net 372 sabreman_test :- and Hainish series.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Welcome to freenode - supporting the free and open source
+:leguin.freenode.net 372 sabreman_test :- software communities since 1998.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- By connecting to freenode you indicate that you have read and
+:leguin.freenode.net 372 sabreman_test :- agree to adhere to our policies and procedures
+:leguin.freenode.net 372 sabreman_test :- website (http://freenode.net/).
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- We would like to remind you that unauthorised public logging
+:leguin.freenode.net 372 sabreman_test :- of channels on the network is prohibited. Public channel
+:leguin.freenode.net 372 sabreman_test :- logging should only take place where the channel owner(s) has
+:leguin.freenode.net 372 sabreman_test :- requested this and users of the channel are all made aware
+:leguin.freenode.net 372 sabreman_test :- (if you are publically logging your channel, you may wish to 
+:leguin.freenode.net 372 sabreman_test :- keep a notice in the topic and perhaps as an on-join message).
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- freenode runs an open proxy scanner. For details on freenode 
+:leguin.freenode.net 372 sabreman_test :- network policy, please take a look at our policy page 
+372 sabreman_test :- (http://freenode.net/policy.shtml).  Your use of the network
+:leguin.freenode.net 372 sabreman_test :- indicates your acceptance of this policy.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Please join #freenode for any network-related questions or
+:leguin.freenode.net 372 sabreman_test :- queries, there are numerous freenode volunteers and helpful
+:leguin.freenode.net 372 sabreman_test :- users who would be happy to try answer any questions you might
+:leguin.freenode.net 372 sabreman_test :- have.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Check out www.fossevents.org to find out what is happening in
+:leguin.freenode.net 372 sabreman_test :- your area, join us at FOSSCON (www.fosscon.org) for talks and
+:leguin.freenode.net 372 sabreman_test :- real-life collaboration or bring a picnic and come join
+:leguin.freenode.net 372 sabreman_test :- like-minded geeks for a geeknic (www.geeknic.org) somew
+here
+:leguin.freenode.net 372 sabreman_test :- close to you. 
+:leguin.freenode.net 372 sabreman_test :- Lastly, massive thanks to the OSU Open Source Lab
+:leguin.freenode.net 372 sabreman_test :- (http://osuosl.org/) and Private Internet Access
+:leguin.freenode.net 372 sabreman_test :- (https://www.privateinternetaccess.com/) for their sustained,
+:leguin.freenode.net 372 sabreman_test :- long term support and dedication they show to the FOSS
+:leguin.freenode.net 372 sabreman_test :- communities.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- ***************************************************************
+:leguin.freenode.net 372 sabreman_test :- Please read http://blog.freenode.net/2010/11/be-safe-out-there/
+:leguin.freenode.net 372 sabreman_test :- ***************************************************************
+:leguin.freenode.net 376 sabreman_test :End of /MOTD command.
+:sabreman_test MODE sabreman_test :+i
+:NickServ!NickServ@services. NOTICE sabreman_tes
+t :sabreman_test is not a registered nickname.
+:leguin.freenode.net NOTICE * :*** Looking up your hostname...
+:leguin.freenode.net NOTICE * :*** Checking Ident
+:leguin.freenode.net NOTICE * :*** Found your hostname
+:leguin.freenode.net NOTICE * :*** No Ident response
+:leguin.freenode.net 001 sabreman_test :Welcome to the freenode Internet Relay Chat Network sabreman_test
+:leguin.freenode.net 002 sabreman_test :Your host is leguin.freenode.net[130.239.18.172/6667], running version ircd-seven-1.1.3
+:leguin.freenode.net 003 sabreman_test :This server was created Mon Dec 31 2012 at 22:37:58 CET
+:leguin.freenode.net 004 sabreman_test leguin.freenode.net ircd-seven-1.1.3 DOQRSZaghilopswz CFILMPQSbcefgijklmnopqrstvz bkloveqjfI
+:leguin.freenode.net 005 sabreman_test CHANTYPES=# EXCEPTS INVEX CHANMODES=eIbq,k,flj,CFLMPQScgimnprstz CHANLIMIT=#:120 PREFIX=(ov)@+ MAXLIST=bqeI:100 MODES=4 NETWORK=freenode KNOCK STATUSMSG=@+ CALLERID=g :are supported by this server
+:leguin.freenode.net 005 sabreman_test CASEMAPPING=rfc1459 CHARSET=ascii NICKLEN=16 CHANNELLEN=50 TOPICLEN=390 ETRACE CPRIVMSG CNOTICE DEAF=D MONITOR=100 FNC TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: :are supported by this server
+:leguin.freenode.net 005 sabreman_test EXTBAN=$,arxz WHOX 
+CLIENTVER=3.0 SAFELIST ELIST=CTU :are supported by this server
+:leguin.freenode.net 251 sabreman_test :There are 206 users and 81270 invisible on 28 servers
+:leguin.freenode.net 252 sabreman_test 30 :IRC Operators online
+:leguin.freenode.net 253 sabreman_test 14 :unknown connection(s)
+:leguin.freenode.net 254 sabreman_test 53540 :channels formed
+:leguin.freenode.net 255 sabreman_test :I have 6413 clients and 1 servers
+:leguin.freenode.net 265 sabreman_test 6413 11356 :Current local users 6413, max 11356
+:leguin.freenode.net 266 sabreman_test 81476 94669 :Current global users 81476, max 94669
+:leguin.freenode.net 250 sabreman_test :Highest connection count: 11357 (11356 clients) (2374032 connections received)
+:leguin.freenode.net 375 sabreman_test :- leguin.freenode.net Message of the Day - 
+:leguin.freenode.net 372 sabreman_test :- Welcome to leguin.freenode.net in Ume?, Sweden, EU! Thanks to
+:leguin.freenode.net 372 sabreman_test :- the Academic Computer Club at Ume? University for sponsoring
+:le
+guin.freenode.net 372 sabreman_test :- this server!
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- LE GUIN, URSULA K. (1929-) Born in Berkeley, California,
+:leguin.freenode.net 372 sabreman_test :- Ursula Le Guin is an american author primarily known for
+:leguin.freenode.net 372 sabreman_test :- her Science Fiction and Fantasy. She has been awarded the
+:leguin.freenode.net 372 sabreman_test :- Hugo and Nebula awards, and is best known for her Earthsea
+:leguin.freenode.net 372 sabreman_test :- and Hainish series.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Welcome to freenode - supporting the free and open source
+:leguin.freenode.net 372 sabreman_test :- software communities since 1998.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- By connecting to freenode you indicate that you have read and
+:leguin.freenode.net 372 sabreman_test :- agree to adhere to our policies and procedures
+:leguin.freenode.net 372 sabreman_test :- website (http://freenode.net/).
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- We would like to remind you that unauthorised public logging
+:leguin.freenode.net 372 sabreman_test :- of channels on the network is prohibited. Public channel
+:leguin.freenode.net 372 sabreman_test :- logging should only take place where the channel owner(s) has
+:leguin.freenode.net 372 sabreman_test :- requested this and users of the channel are all made aware
+:leguin.freenode.net 372 sabreman_test :- (if you are publically logging your channel, you may wish to 
+:leguin.freenode.net 372 sabreman_test :- keep a notice in the topic and perhaps as an on-join message).
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- freenode runs an open proxy scanner. For details on freenode 
+:leguin.freenode.net 372 sabreman_test :- network policy, please take a look at our policy page 
+372 sabreman_test :- (http://freenode.net/policy.shtml).  Your use of the network
+:leguin.freenode.net 372 sabreman_test :- indicates your acceptance of this policy.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Please join #freenode for any network-related questions or
+:leguin.freenode.net 372 sabreman_test :- queries, there are numerous freenode volunteers and helpful
+:leguin.freenode.net 372 sabreman_test :- users who would be happy to try answer any questions you might
+:leguin.freenode.net 372 sabreman_test :- have.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Check out www.fossevents.org to find out what is happening in
+:leguin.freenode.net 372 sabreman_test :- your area, join us at FOSSCON (www.fosscon.org) for talks and
+:leguin.freenode.net 372 sabreman_test :- real-life collaboration or bring a picnic and come join
+:leguin.freenode.net 372 sabreman_test :- like-minded geeks for a geeknic (www.geeknic.org) somew
+here
+:leguin.freenode.net 372 sabreman_test :- close to you. 
+:leguin.freenode.net 372 sabreman_test :- Lastly, massive thanks to the OSU Open Source Lab
+:leguin.freenode.net 372 sabreman_test :- (http://osuosl.org/) and Private Internet Access
+:leguin.freenode.net 372 sabreman_test :- (https://www.privateinternetaccess.com/) for their sustained,
+:leguin.freenode.net 372 sabreman_test :- long term support and dedication they show to the FOSS
+:leguin.freenode.net 372 sabreman_test :- communities.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- ***************************************************************
+:leguin.freenode.net 372 sabreman_test :- Please read http://blog.freenode.net/2010/11/be-safe-out-there/
+:leguin.freenode.net 372 sabreman_test :- ***************************************************************
+:leguin.freenode.net 376 sabreman_test :End of /MOTD command.
+:sabreman_test MODE sabreman_test :+i
+:NickServ!NickServ@services. NOTICE sabreman_tes
+t :sabreman_test is not a registered nickname.
+:morgan.freenode.net NOTICE * :*** Looking up your hostname...
+:morgan.freenode.net NOTICE * :*** Checking Ident
+:morgan.freenode.net NOTICE * :*** Found your hostname
+:leguin.freenode.net NOTICE * :*** Looking up your hostname...
+:leguin.freenode.net NOTICE * :*** Checking Ident
+:leguin.freenode.net NOTICE * :*** Found your hostname
+:leguin.freenode.net NOTICE * :*** No Ident response
+:leguin.freenode.net 433 * sabreman_test :Nickname is already in use.
+:leguin.freenode.net 451 * :You have not registered
+
+
+----------------
+Faggot
+---------------:leguin.freenode.net NOTICE * :*** Looking up your hostname...
+:leguin.freenode.net NOTICE * :*** Checking Ident
+:leguin.freenode.net NOTICE * :*** Found your hostname
+:leguin.freenode.net NOTICE * :*** No Ident response
+:leguin.freenode.net 433 * sabreman_test :Nickname is already in use.
+:leguin.freenode.net 451 * :You have not registered
+:morgan.freenode.net NOTICE * :*** Looking up your hostname...
+:morgan.freenode.net NOTICE * :*** Checking Ident
+:morgan.freenode.net NOTICE * :*** Found your hostname
+:morgan.freenode.net NOTICE * :*** No Ident response
+:morgan.freenode.net 001 sabreman_test :Welcome to the freenode Internet Relay Chat Network sabreman_test
+:morgan.freenode.net 002 sabreman_test :Your host is morgan.freenode.net[64.32.24.176/6667], running version ircd-seven-1.1.3
+:morgan.freenode.net 003 sabreman_test :This server was created Tue Mar 12 2013 at 18:27:25 EDT
+:morgan.freenode.net 004 sabreman_test morgan.freenode.net ircd-seven-1.1.3 DOQRSZaghilopswz CFILMPQSbcefgijklmnopqrstvz bkloveqjfI
+:morgan.freenode.net 005 sabreman_test CHANTYPES=# EXCEPTS INVEX CHANMODES=eIbq,k,flj,CFLMPQScgimnprstz CHANLIMIT=#:120 PREFIX=(ov)@+ MAXLIST=bqeI:100 MODES=4 NETWORK=freenode KNOCK STATUSMSG=@+ CALLERID=g :are supported by this server
+:morgan.freenode.net 005 sabreman_test CASEMAPPING=rfc1459 CHARSET=ascii NICKLEN=16 CHANNELLEN=50 TOPICLEN=390 ETRACE CPRIVMSG CNOTICE DEAF=D MONITOR=100 FNC TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: :are supported by this server
+:morgan.freenode.net 005 sabreman_test EXTBAN=$,arxz WHOX CL
+IENTVER=3.0 SAFELIST ELIST=CTU :are supported by this server
+:morgan.freenode.net 251 sabreman_test :There are 205 users and 80916 invisible on 28 servers
+:morgan.freenode.net 252 sabreman_test 30 :IRC Operators online
+:morgan.freenode.net 253 sabreman_test 20 :unknown connection(s)
+:morgan.freenode.net 254 sabreman_test 53474 :channels formed
+:morgan.freenode.net 255 sabreman_test :I have 3200 clients and 1 servers
+:morgan.freenode.net 265 sabreman_test 3200 7852 :Current local users 3200, max 7852
+:morgan.freenode.net 266 sabreman_test 81121 94669 :Current global users 81121, max 94669
+:morgan.freenode.net 250 sabreman_test :Highest connection count: 7853 (7852 clients) (1950258 connections received)
+:morgan.freenode.net 375 sabreman_test :- morgan.freenode.net Message of the Day - 
+:morgan.freenode.net 372 sabreman_test :- Welcome to morgan.freenode.net in Chicago, IL, USA! Thank
+:morgan.freenode.net 372 sabreman_test :- you to psyprus for sponsoring this server!
+:morgan.freenode.net 372 sabrem
+an_test :-  
+:morgan.freenode.net 372 sabreman_test :- MORGAN, RICHARD K. (1965-) is an English science fiction
+:morgan.freenode.net 372 sabreman_test :- author. Morgan's books are generally set in a dystopian world.
+:morgan.freenode.net 372 sabreman_test :- His breakout novel Altered Carbon won the Philip K. Dick Award,
+:morgan.freenode.net 372 sabreman_test :- and he has written many successful and amazing works to follow.
+:morgan.freenode.net 372 sabreman_test :- His more recent writings explore the theme of autonomy
+:morgan.freenode.net 372 sabreman_test :- in science fiction and escapism in fantasy.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- Welcome to freenode - supporting the free and open source
+:morgan.freenode.net 372 sabreman_test :- software communities since 1998.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- By connecting to freenode you indicate that you hav
+e read and
+:morgan.freenode.net 372 sabreman_test :- agree to adhere to our policies and procedures as per the
+:morgan.freenode.net 372 sabreman_test :- website (http://freenode.net/).
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- We would like to remind you that unauthorised public logging
+:morgan.freenode.net 372 sabreman_test :- of channels on the network is prohibited. Public channel
+:morgan.freenode.net 372 sabreman_test :- logging should only take place where the channel owner(s) has
+:morgan.freenode.net 372 sabreman_test :- requested this and users of the channel are all made aware
+:morgan.freenode.net 372 sabreman_test :- (if you are publically logging your channel, you may wish to 
+:morgan.freenode.net 372 sabreman_test :- keep a notice in the topic and perhaps as an on-join message).
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- freenode runs an open proxy scanner. For details on freenode 
+:morgan.freenode.ne
+t 372 sabreman_test :- network policy, please take a look at our policy page 
+:morgan.freenode.net 372 sabreman_test :- (http://freenode.net/policy.shtml).  Your use of the network
+:morgan.freenode.net 372 sabreman_test :- indicates your acceptance of this policy.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- Please join #freenode for any network-related questions or
+:morgan.freenode.net 372 sabreman_test :- queries, there are numerous freenode volunteers and helpful
+:morgan.freenode.net 372 sabreman_test :- users who would be happy to try answer any questions you might
+:morgan.freenode.net 372 sabreman_test :- have.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- Check out www.fossevents.org to find out what is happening in
+:morgan.freenode.net 372 sabreman_test :- your area, join us at FOSSCON (www.fosscon.org) for talks and
+:morgan.freenode.net 372 sabreman_test :- real-life collaboration or bring a picnic and come joi
+n
+:morgan.freenode.net 372 sabreman_test :- like-minded geeks for a geeknic (www.geeknic.org) somewhere
+:morgan.freenode.net 372 sabreman_test :- close to you. 
+:morgan.freenode.net 372 sabreman_test :- Lastly, massive thanks to the OSU Open Source Lab
+:morgan.freenode.net 372 sabreman_test :- (http://osuosl.org/) and Private Internet Access
+:morgan.freenode.net 372 sabreman_test :- (https://www.privateinternetaccess.com/) for their sustained,
+:morgan.freenode.net 372 sabreman_test :- long term support and dedication they show to the FOSS
+:morgan.freenode.net 372 sabreman_test :- communities.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- ***************************************************************
+:morgan.freenode.net 372 sabreman_test :- Please read http://blog.freenode.net/2010/11/be-safe-out-there/
+:morgan.freenode.net 372 sabreman_test :- ***************************************************************
+:morgan.freenode.net 376 sabreman_test :End of /MO
+TD command.
+:sabreman_test MODE sabreman_test :+i
+:NickServ!NickServ@services. NOTICE sabreman_test :sabreman_test is not a registered nickname.
+:leguin.freenode.net NOTICE * :*** Looking up your hostname...
+:leguin.freenode.net NOTICE * :*** Checking Ident
+:leguin.freenode.net NOTICE * :*** Found your hostname
+:leguin.freenode.net NOTICE * :*** No Ident response
+:leguin.freenode.net 001 sabreman_test :Welcome to the freenode Internet Relay Chat Network sabreman_test
+:leguin.freenode.net 002 sabreman_test :Your host is leguin.freenode.net[130.239.18.172/6667], running version ircd-seven-1.1.3
+:leguin.freenode.net 003 sabreman_test :This server was created Mon Dec 31 2012 at 22:37:58 CET
+:leguin.freenode.net 004 sabreman_test leguin.freenode.net ircd-seven-1.1.3 DOQRSZaghilopswz CFILMPQSbcefgijklmnopqrstvz bkloveqjfI
+:leguin.freenode.net 005 sabreman_test CHANTYPES=# EXCEPTS INVEX CHANMODES=eIbq,k,flj,CFLMPQScgimnprstz CHANLIMIT=#:120 PREFIX=(ov)@+ MAXLIST=bqeI:100 MODES=4 NETWORK=freenode KNOCK STATUSMSG=@+ CALLERID=g :are supported by this server
+:leguin.freenode.net 005 sabreman_test CASEMAPPING=rfc1459 CHARSET=ascii NICKLEN=16 CHANNELLEN=50 TOPICLEN=390 ETRACE CPRIVMSG CNOTICE DEAF=D MONITOR=100 FNC TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: :are supported by this server
+:leguin.freenode.net 005 sabreman_test EXTBAN=$,arxz WHOX 
+CLIENTVER=3.0 SAFELIST ELIST=CTU :are supported by this server
+:leguin.freenode.net 251 sabreman_test :There are 206 users and 80854 invisible on 28 servers
+:leguin.freenode.net 252 sabreman_test 30 :IRC Operators online
+:leguin.freenode.net 253 sabreman_test 13 :unknown connection(s)
+:leguin.freenode.net 254 sabreman_test 53460 :channels formed
+:leguin.freenode.net 255 sabreman_test :I have 6299 clients and 1 servers
+:leguin.freenode.net 265 sabreman_test 6299 11356 :Current local users 6299, max 11356
+:leguin.freenode.net 266 sabreman_test 81060 94669 :Current global users 81060, max 94669
+:leguin.freenode.net 250 sabreman_test :Highest connection count: 11357 (11356 clients) (2374516 connections received)
+:leguin.freenode.net 375 sabreman_test :- leguin.freenode.net Message of the Day - 
+:leguin.freenode.net 372 sabreman_test :- Welcome to leguin.freenode.net in Ume?, Sweden, EU! Thanks to
+:leguin.freenode.net 372 sabreman_test :- the Academic Computer Club at Ume? University for sponsoring
+:le
+guin.freenode.net 372 sabreman_test :- this server!
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- LE GUIN, URSULA K. (1929-) Born in Berkeley, California,
+:leguin.freenode.net 372 sabreman_test :- Ursula Le Guin is an american author primarily known for
+:leguin.freenode.net 372 sabreman_test :- her Science Fiction and Fantasy. She has been awarded the
+:leguin.freenode.net 372 sabreman_test :- Hugo and Nebula awards, and is best known for her Earthsea
+:leguin.freenode.net 372 sabreman_test :- and Hainish series.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Welcome to freenode - supporting the free and open source
+:leguin.freenode.net 372 sabreman_test :- software communities since 1998.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- By connecting to freenode you indicate that you have read and
+:leguin.freenode.net 372 sabreman_test :- agree to adhere to our policies and procedures
+:leguin.freenode.net 372 sabreman_test :- website (http://freenode.net/).
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- We would like to remind you that unauthorised public logging
+:leguin.freenode.net 372 sabreman_test :- of channels on the network is prohibited. Public channel
+:leguin.freenode.net 372 sabreman_test :- logging should only take place where the channel owner(s) has
+:leguin.freenode.net 372 sabreman_test :- requested this and users of the channel are all made aware
+:leguin.freenode.net 372 sabreman_test :- (if you are publically logging your channel, you may wish to 
+:leguin.freenode.net 372 sabreman_test :- keep a notice in the topic and perhaps as an on-join message).
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- freenode runs an open proxy scanner. For details on freenode 
+:leguin.freenode.net 372 sabreman_test :- network policy, please take a look at our policy page 
+372 sabreman_test :- (http://freenode.net/policy.shtml).  Your use of the network
+:leguin.freenode.net 372 sabreman_test :- indicates your acceptance of this policy.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Please join #freenode for any network-related questions or
+:leguin.freenode.net 372 sabreman_test :- queries, there are numerous freenode volunteers and helpful
+:leguin.freenode.net 372 sabreman_test :- users who would be happy to try answer any questions you might
+:leguin.freenode.net 372 sabreman_test :- have.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- Check out www.fossevents.org to find out what is happening in
+:leguin.freenode.net 372 sabreman_test :- your area, join us at FOSSCON (www.fosscon.org) for talks and
+:leguin.freenode.net 372 sabreman_test :- real-life collaboration or bring a picnic and come join
+:leguin.freenode.net 372 sabreman_test :- like-minded geeks for a geeknic (www.geeknic.org) somew
+here
+:leguin.freenode.net 372 sabreman_test :- close to you. 
+:leguin.freenode.net 372 sabreman_test :- Lastly, massive thanks to the OSU Open Source Lab
+:leguin.freenode.net 372 sabreman_test :- (http://osuosl.org/) and Private Internet Access
+:leguin.freenode.net 372 sabreman_test :- (https://www.privateinternetaccess.com/) for their sustained,
+:leguin.freenode.net 372 sabreman_test :- long term support and dedication they show to the FOSS
+:leguin.freenode.net 372 sabreman_test :- communities.
+:leguin.freenode.net 372 sabreman_test :-  
+:leguin.freenode.net 372 sabreman_test :- ***************************************************************
+:leguin.freenode.net 372 sabreman_test :- Please read http://blog.freenode.net/2010/11/be-safe-out-there/
+:leguin.freenode.net 372 sabreman_test :- ***************************************************************
+:leguin.freenode.net 376 sabreman_test :End of /MOTD command.
+:sabreman_test MODE sabreman_test :+i
+:NickServ!NickServ@services. NOTICE sabreman_tes
+t :sabreman_test is not a registered nickname.
+:morgan.freenode.net NOTICE * :*** Looking up your hostname...
+:morgan.freenode.net NOTICE * :*** Checking Ident
+:morgan.freenode.net NOTICE * :*** Found your hostname
+:morgan.freenode.net NOTICE * :*** No Ident response
+:morgan.freenode.net 001 sabreman_test :Welcome to the freenode Internet Relay Chat Network sabreman_test
+:morgan.freenode.net 002 sabreman_test :Your host is morgan.freenode.net[64.32.24.176/6667], running version ircd-seven-1.1.3
+:morgan.freenode.net 003 sabreman_test :This server was created Tue Mar 12 2013 at 18:27:25 EDT
+:morgan.freenode.net 004 sabreman_test morgan.freenode.net ircd-seven-1.1.3 DOQRSZaghilopswz CFILMPQSbcefgijklmnopqrstvz bkloveqjfI
+:morgan.freenode.net 005 sabreman_test CHANTYPES=# EXCEPTS INVEX CHANMODES=eIbq,k,flj,CFLMPQScgimnprstz CHANLIMIT=#:120 PREFIX=(ov)@+ MAXLIST=bqeI:100 MODES=4 NETWORK=freenode KNOCK STATUSMSG=@+ CALLERID=g :are supported by this server
+:morgan.freenode.net 005 sabreman_test CASEMAPPING=rfc1459 CHARSET=ascii NICKLEN=16 CHANNELLEN=50 TOPICLEN=390 ETRACE CPRIVMSG CNOTICE DEAF=D MONITOR=100 FNC TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR: :are supported by this server
+:morgan.freenode.net 005 sabreman_test EXTBAN=$,arxz WHOX CL
+IENTVER=3.0 SAFELIST ELIST=CTU :are supported by this server
+:morgan.freenode.net 251 sabreman_test :There are 207 users and 80843 invisible on 28 servers
+:morgan.freenode.net 252 sabreman_test 30 :IRC Operators online
+:morgan.freenode.net 253 sabreman_test 29 :unknown connection(s)
+:morgan.freenode.net 254 sabreman_test 53465 :channels formed
+:morgan.freenode.net 255 sabreman_test :I have 3195 clients and 1 servers
+:morgan.freenode.net 265 sabreman_test 3195 7852 :Current local users 3195, max 7852
+:morgan.freenode.net 266 sabreman_test 81050 94669 :Current global users 81050, max 94669
+:morgan.freenode.net 250 sabreman_test :Highest connection count: 7853 (7852 clients) (1950338 connections received)
+:morgan.freenode.net 375 sabreman_test :- morgan.freenode.net Message of the Day - 
+:morgan.freenode.net 372 sabreman_test :- Welcome to morgan.freenode.net in Chicago, IL, USA! Thank
+:morgan.freenode.net 372 sabreman_test :- you to psyprus for sponsoring this server!
+:morgan.freenode.net 372 sabrem
+an_test :-  
+:morgan.freenode.net 372 sabreman_test :- MORGAN, RICHARD K. (1965-) is an English science fiction
+:morgan.freenode.net 372 sabreman_test :- author. Morgan's books are generally set in a dystopian world.
+:morgan.freenode.net 372 sabreman_test :- His breakout novel Altered Carbon won the Philip K. Dick Award,
+:morgan.freenode.net 372 sabreman_test :- and he has written many successful and amazing works to follow.
+:morgan.freenode.net 372 sabreman_test :- His more recent writings explore the theme of autonomy
+:morgan.freenode.net 372 sabreman_test :- in science fiction and escapism in fantasy.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- Welcome to freenode - supporting the free and open source
+:morgan.freenode.net 372 sabreman_test :- soft
+ware communities since 1998.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- By connecting to freenode you indicate that you have read and
+:morgan.freenode.net 372 sabreman_test :- agree to adhere to our policies and procedures as per the
+:morgan.freenode.net 372 sabreman_test :- website (http://freenode.net/).
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- We would like to remind you that unauthorised public logging
+:morgan.freenode.net 372 sabreman_test :- of channels on the network is prohibited. Public channel
+:morgan.freenode.net 372 sabreman_test :- logging should only take place where the channel owner(s) has
+:morgan.freenode.net 372 sabreman_test :- requested this and users of the channel are all made aware
+:morgan.freenode.net 372 sabreman_test :- (if you are publically logging your channel, you may wish to 
+:morgan.freenode.net 372 sabreman_test :- keep a notice in the topic and perhaps as an on-join message).
+:
+morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- freenode runs an open proxy scanner. For details on freenode 
+:morgan.freenode.net 372 sabreman_test :- network policy, please take a look at our policy page 
+:morgan.freenode.net 372 sabreman_test :- (http://freenode.net/policy.shtml).  Your use of the network
+:morgan.freenode.net 372 sabreman_test :- indicates your acceptance of this policy.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- Please join #freenode for any network-related questions or
+:morgan.freenode.net 372 sabreman_test :- queries, there are numerous freenode volunteers and helpful
+:morgan.freenode.net 372 sabreman_test :- users who would be happy to try answer any questions you might
+:morgan.freenode.net 372 sabreman_test :- have.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- Check out www.fossevents.org to find out what is happening in
+:morgan.freenode.net 372 sabreman
+_test :- your area, join us at FOSSCON (www.fosscon.org) for talks and
+:morgan.freenode.net 372 sabreman_test :- real-life collaboration or bring a picnic and come join
+:morgan.freenode.net 372 sabreman_test :- like-minded geeks for a geeknic (www.geeknic.org) somewhere
+:morgan.freenode.net 372 sabreman_test :- close to you. 
+:morgan.freenode.net 372 sabreman_test :- Lastly, massive thanks to the OSU Open Source Lab
+:morgan.freenode.net 372 sabreman_test :- (http://osuosl.org/) and Private Internet Access
+:morgan.freenode.net 372 sabreman_test :- (https://www.privateinternetaccess.com/) for their sustained,
+:morgan.freenode.net 372 sabreman_test :- long term support and dedication they show to the FOSS
+:morgan.freenode.net 372 sabreman_test :- communities.
+:morgan.freenode.net 372 sabreman_test :-  
+:morgan.freenode.net 372 sabreman_test :- ***************************************************************
+:morgan.freenode.net 372 sabreman_test :- Please read http://blog.freenode.net/2010/11/be-safe-o
+ut-there/
+:morgan.freenode.net 372 sabreman_test :- ***************************************************************
+:morgan.freenode.net 376 sabreman_test :End of /MOTD command.
+:sabreman_test MODE sabreman_test :+i
+:NickServ!NickServ@services. NOTICE sabreman_test :sabreman_test is not a registered nickname.
+:morgan.freenode.net PONG morgan.freenode.net :morgan.freenode.net
