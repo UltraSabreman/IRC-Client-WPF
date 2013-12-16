@@ -25,7 +25,7 @@ namespace IRC_Client_WPF {
 					}
 				};
 
-				InCommandDict ["RPL_NAMREPLY"] = InCommandDict [353.ToString()] = (Prefix, Params, Trail) => {
+				InCommandDict [Reply.NamReply] = (Prefix, Params, Trail) => {
 					try {
 						var rDict = Util.regexMatch(Params, @"^(?<mynick>.*) (?<type>=|\*|@) (?<channel>#\w*)$", RegexOptions.Compiled);
 						Channel c = channelByName(rDict ["channel"]);
@@ -38,11 +38,36 @@ namespace IRC_Client_WPF {
 					
 				};
 
-				InCommandDict ["RPL_ENDOFNAMES"] = InCommandDict [366.ToString()] = (Prefix, Params, Trail) => {
+				InCommandDict [Reply.EndOfNames] = (Prefix, Params, Trail) => {
 					Channel c = channelByName("#" + Params.Split("#".ToCharArray()) [1]);
 
 					c.nicks.Sort();
 					c.updateLongestNick();
+				};
+
+
+				InCommandDict [Error.ChanOPrivsNeeded] = InCommandDict [482.ToString()] = (Prefix, Params, Trail) => {
+					Channel target = channelByName(Params);
+					if (target != null) {
+						target += (DateTime.Now.ToString("hh:mm:ss tt") + "\t SERVER : " + Trail);
+					}
+
+				};
+
+				InCommandDict [Reply.Topic] = (Prefix, Params, Trail) => {
+					Channel target = channelByName(Params.Split(" ".ToCharArray()) [1]);
+					if (target != null) {
+						target.topic = Trail;
+						//TODO: update UI;
+					}
+				};
+				InCommandDict ["TOPIC"] = (Prefix, Params, Trail) => {
+					Channel target = channelByName(Params);
+					if (target != null) {
+						string nick = Prefix.Split("!".ToCharArray()) [0];
+						target += (DateTime.Now.ToString("hh:mm:ss tt") + "\t" + nick + " : changed topic to: " + Trail);
+						target.topic = Trail;
+					}
 				};
 
 				InCommandDict ["JOIN"] = (Prefix, Params, Trail) => {
@@ -51,6 +76,8 @@ namespace IRC_Client_WPF {
 							if (!c.isConnected)
 								c.isConnected = true;
 
+							ExpandSubtree();
+							c.IsSelected = true;
 							return;
 						}
 

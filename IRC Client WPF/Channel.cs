@@ -21,7 +21,9 @@ namespace IRC_Client_WPF {
         public Server server;
 		public int LongestNick = 0;
         public string channelName;
+		public string topic = "";
 
+		public bool isAdmin = false;
 		public bool isConnected = false;
 
 		private bool flop = false; //determiens background for chat box.
@@ -37,9 +39,8 @@ namespace IRC_Client_WPF {
 			isConnected = true;
 
 			//this trips when we init the first server (since it starts before the UI).
+			//Expands the tree and selects this newly made channel.
 			try { server.ExpandSubtree(); } catch (NullReferenceException e) { }
-
-
 			IsSelected = true;
         }
 
@@ -95,7 +96,7 @@ namespace IRC_Client_WPF {
 
 			if (s.StartsWith("/")) {
 				try {
-					var rDict = Util.regexMatch(s, @"^(/(?<command>\S+)) (?<text>.+)?$", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+					var rDict = Util.regexMatch(s, @"^(/(?<command>\S+))(?<text> .+)?$", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
 					string Command = rDict ["command"].ToUpper();
 					string Text = rDict ["text"].TrimEnd("\n\r".ToCharArray());

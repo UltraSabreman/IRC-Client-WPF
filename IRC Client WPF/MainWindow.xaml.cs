@@ -17,7 +17,6 @@ using System.Text.RegularExpressions;
 
 namespace IRC_Client_WPF {
     public partial class MainWindow : Window {
-        //Server MainBuffer;
 		DataReader reader = new DataReader();
 
         public MainWindow() {
@@ -32,8 +31,6 @@ namespace IRC_Client_WPF {
         }
 
         public void channelUpdated(object o, ChannelUpdate e) {
-			//TODO: make me efficent
-
 			bool shouldScroll = UIChatBox.VerticalOffset + UIChatBox.ViewportHeight >= UIChatBox.ExtentHeight;
 
             if (getSelectedChannel() == e.channel) {
@@ -46,10 +43,10 @@ namespace IRC_Client_WPF {
             }
 
 			if (shouldScroll) UIChatBox.ScrollToEnd();
+			UIChanTopic.Text = e.channel.topic;
         }
 
         public void changeChannel(object o, RoutedPropertyChangedEventArgs<Object> e) {
-			//UIChatBox.Document.Blocks.Clear();
 			UINickList.Items.Clear();
 
 			Channel c = getSelectedChannel();
@@ -61,11 +58,14 @@ namespace IRC_Client_WPF {
 			c.sync();
 
 			UIChatBox.ScrollToEnd();
+			UIChanTopic.Text = c.topic;
+
+			//if (!c.isAdmin)
+			//	UIChanTopic.IsReadOnly = true;
+
         }
 
         public void channelCreated(object o, ChannelCreatedEvent e) {
-			//UIServerList.SelectedValuePath = e.channel.DisplayMemberPath;
-			//Util.SetSelectedItem(ref UIServerList, e.channel);
             e.channel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
         }
 
@@ -152,6 +152,15 @@ namespace IRC_Client_WPF {
 			} catch (System.Net.Sockets.SocketException) {
 				MessageBox.Show("Error: Invalid server adress.", "Invalid Server Adress", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
+		}
+
+		private void UIChanTopic_KeyUp(object sender, KeyEventArgs e) {
+			Channel c = getSelectedChannel();
+			if (c == null) return;
+
+			if (e.Key == Key.Enter) {
+				c.parseOutgoing("/topic " + UIChanTopic.Text);
+			} 
 		}
     }
 }

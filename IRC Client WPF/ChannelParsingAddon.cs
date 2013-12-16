@@ -41,6 +41,12 @@ namespace IRC_Client_WPF {
 				isConnected = false;
             };
 
+			OutCommandDict ["TOPIC"] = (Text) => {
+				if (isServChan()) return;
+
+				server.sendString("TOPIC " + channelName + " :" + Text + "\r\n");
+			};
+
 			OutCommandDict ["CLOSE"] = (Text) => {
 				if (isServChan()) return;
 

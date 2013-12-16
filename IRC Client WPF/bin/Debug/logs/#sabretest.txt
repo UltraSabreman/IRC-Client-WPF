@@ -17,3 +17,4 @@ Sabreman : test
 05:01:18 PM	sabreman_test: /close
 05:03:18 PM	sabreman: faggot
 05:03:22 PM	sabreman_test: no u
+07:00:19 PM	sabreman : changed topic to: dfgdfgdf
