@@ -44,7 +44,7 @@ namespace IRC_Client_WPF {
 
 			initServer();
 			foreach (string channel in info.Channels) {
-				sendString("JOIN " + channel + "\r\n");
+				sendString("JOIN " + channel);
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace IRC_Client_WPF {
 
 			//TODO: get user data form somewhere
 			Random getNewPass = new Random();
-			serverChannel = new Channel(this, info.Name);
+			serverChannel = new Channel(this, info.Name, true);
 			Header = serverChannel.Header;
 
 			connection = new TcpClient(info.Address, info.Port);
@@ -79,9 +79,9 @@ namespace IRC_Client_WPF {
 
 			IsConnected = true;
 
-			sendString("PASS " + getNewPass.Next().ToString() + "\r\n");
-			sendString("NICK " + info.Nick + "\r\n");
-			sendString("USER " + info.UserName + " " + info.UserMode + " * :" + info.RealName + "\r\n");
+			sendString("PASS " + getNewPass.Next().ToString());
+			sendString("NICK " + info.Nick);
+			sendString("USER " + info.UserName + " " + info.UserMode + " * :" + info.RealName);
 
 			listen();
 		}
@@ -101,9 +101,14 @@ namespace IRC_Client_WPF {
 				Items.Remove(c);
 		}
 
-        public async void sendString(string s) {
+        public async void sendString(string s, bool parseNow = false) {
+			if (parseNow) { 
+				parseIncoming(s);
+				return;
+			}
+
             UTF8Encoding encoding = new UTF8Encoding();
-            byte[] result = encoding.GetBytes(s);
+            byte[] result = encoding.GetBytes(s + "\r\n");
 
             try {
                 await nwStream.WriteAsync(result, 0, result.Length);
@@ -124,7 +129,7 @@ namespace IRC_Client_WPF {
 					//if (nwStream.DataAvailable)
 						bytes = await nwStream.ReadAsync(data, 0, data.Length);
                 } catch (ObjectDisposedException e) {
-					Util.print(Name + ": Server Stream Closer", ConsoleColor.Red);
+					Util.Print(Name + ": Server Stream Closer", ConsoleColor.Red);
                     break;
                 }
 
@@ -140,7 +145,7 @@ namespace IRC_Client_WPF {
         }
 
 		
-        public void parseIncoming(string msg) {
+        private void parseIncoming(string msg) {
             if (msg == null || msg == "") return;
 
             Console.WriteLine(msg);
@@ -156,11 +161,11 @@ namespace IRC_Client_WPF {
                 try {
                     InCommandDict [Command](Prefix, Params, Trail);
                 } catch (KeyNotFoundException e) {
-                    serverChannel.addLine(msg);
+					printToServer(msg);
                 }
 
 			} catch (RegexMatchFailedException e) {
-				Util.print("Failed Msg Parse", ConsoleColor.DarkGreen);
+				Util.Print("Failed Msg Parse", ConsoleColor.DarkGreen);
 			}
             
         }
@@ -175,5 +180,24 @@ namespace IRC_Client_WPF {
             return null;
         }
 
+		public void printToServer(string messge) {
+			sendString(":--- PRIVMSG " + serverChannel.channelName + " :" + messge, true);
+		}
+
+		public void printToCurChannel(string messege) {
+			Channel curChan = getSelectedChannel();
+			if (curChan != null)
+				sendString(":--- PRIVMSG " + curChan.channelName + " :" + messege, true);
+		}
+
+		private Channel getSelectedChannel() {
+			if (IsSelected || serverChannel.IsSelected)
+				return serverChannel;
+
+			foreach (Channel c in Items)
+				if (c.IsSelected)
+					return c;
+			return null;
+		}
     }
 }

@@ -15,6 +15,7 @@ using System.Reflection;
 
 
 namespace IRC_Client_WPF {
+
     public static class Util {
         [DllImport("Kernel32")]
         public static extern void AllocConsole();
@@ -23,13 +24,29 @@ namespace IRC_Client_WPF {
         public static extern void FreeConsole();
 
 
-		
-        public static void print(string str, ConsoleColor col = ConsoleColor.Gray) {
-            ConsoleColor old = Console.ForegroundColor;
-            Console.ForegroundColor = col;
-            Console.WriteLine(str);
-            Console.ForegroundColor = old;
+		/// <summary>
+		/// Takes a variable amout of strings and consolecolor objects. 
+		/// </summary>
+		/// <param name="args"></param>
+        public static void Print(params object [] args) {
+            ConsoleColor oldF = Console.ForegroundColor;
+
+			foreach (object o in args) {
+				if (o.GetType() == typeof(ConsoleColor))
+					Console.ForegroundColor = (ConsoleColor)o;
+				else if (o.GetType() == typeof(string))
+					Console.Write(o as string);
+			}
+
+            Console.ForegroundColor = oldF;
         }
+
+		public static void PrintLine(string str, ConsoleColor col = ConsoleColor.Gray) {
+			ConsoleColor old = Console.ForegroundColor;
+			Console.ForegroundColor = col;
+			Console.WriteLine(str);
+			Console.ForegroundColor = old;
+		}
 
         public static Dictionary<string, string> regexMatch(string tar, string regex, RegexOptions option) {
             var tempD = new Dictionary<string, string>();
@@ -255,7 +272,7 @@ namespace IRC_Client_WPF {
 		public static string NoAdminInfo = "423";                  // <server> :No administrative info available
 		public static string Fileor = "424";
 		public static string NoNicknameGiven = "431";                  // :No nickname given
-		public static string oneusNickname = "432";                  // <nickname> :oneus Nickname
+		public static string ErroneusNickname = "432";                  // <nickname> :Erroneus Nickname
 		public static string NickNameInUse = "433";                  // <nickname> :Nickname is already in use.
 		public static string NickCollision = "436";                  // <nickname> :Nickname collision KILL
 		public static string UnAvailResource = "437";                  // <channel> :Cannot change nickname while banned on channel

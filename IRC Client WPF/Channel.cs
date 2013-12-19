@@ -19,6 +19,7 @@ namespace IRC_Client_WPF {
 
 		public int newMesseges = 0;
         public Server server;
+		public bool isServerChannel = false;
 		public int LongestNick = 0;
         public string channelName;
 		public string topic = "";
@@ -30,13 +31,15 @@ namespace IRC_Client_WPF {
 
         public event EventHandler<ChannelUpdate> OnUpdate;
 
-        public Channel(Server s, string name) {
+        public Channel(Server s, string name, bool local = false) {
             server = s;
             channelName = name;
             Header = name;
             PopulateOutDict();
 			loadBacklog();
 			isConnected = true;
+			if (local)
+				isServerChannel = true;
 
 			//this trips when we init the first server (since it starts before the UI).
 			//Expands the tree and selects this newly made channel.
@@ -70,7 +73,7 @@ namespace IRC_Client_WPF {
 					buffer.Blocks.Add(temp);
 					
 				} catch (AccessViolationException e) {
-					Util.print("ERROR: Log reading failed for " + channelName, ConsoleColor.Red);					
+					Util.PrintLine("ERROR: Log reading failed for " + channelName, ConsoleColor.Red);					
 				}
 			}
 		}
@@ -87,7 +90,7 @@ namespace IRC_Client_WPF {
 				fs.WriteLine(whatToWrite);
 				fs.Close();
 			} catch (AccessViolationException e) {
-				Util.print("ERROR: Log writing failed for " + channelName, ConsoleColor.Red);
+				Util.PrintLine("ERROR: Log writing failed for " + channelName, ConsoleColor.Red);
 			}
 		}
 
@@ -96,22 +99,24 @@ namespace IRC_Client_WPF {
 
 			if (s.StartsWith("/")) {
 				try {
-					var rDict = Util.regexMatch(s, @"^(/(?<command>\S+))(?<text> .+)?$", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+					var rDict = Util.regexMatch(s, @"^(/(?<command>\S+)?)( (?<params>.+))?", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
 					string Command = rDict ["command"].ToUpper();
-					string Text = rDict ["text"].TrimEnd("\n\r".ToCharArray());
+					string Params = rDict ["params"].ToUpper();
 
 					try {
-						if (String.IsNullOrEmpty(Command))
-							OutCommandDict [Text](null);
+						/*if (String.IsNullOrEmpty(Command))
+							OutCommandDict [Params](null);
 						else
-							OutCommandDict [Command](Text);
-					} catch (KeyNotFoundException e) {
-
-						server.serverChannel.addLine("Invalid Command");
+							OutCommandDict [Command](Text);*/
+						OutCommandDict [Command](Params);
+					} catch (KeyNotFoundException) {
+						//server.serverChannel.addLine("Invalid Command");
+						//Silenty continue.
+						//TODO: let the user know it failed?
 					}
 				} catch (RegexMatchFailedException) {
-					Util.print("Failed Msg Parse", ConsoleColor.DarkGreen);
+					Util.Print(ConsoleColor.DarkGreen, "Failed OutMsg Parse: ", ConsoleColor.White, s, "\n");
 				}
 
 			} else
@@ -127,15 +132,8 @@ namespace IRC_Client_WPF {
 			LongestNick = l;
         }
 
-        public static Channel operator +(Channel c, string s) {
-            c.addLine(s);
-            return c;
-        }
-
-        public void addLine(string s) {
-			//TODO: highlight our name if mentioned.
-
-			buffer.Blocks.Add(formatLine(s));
+        public void addLine(string nick, string s) {
+			buffer.Blocks.Add(formatLine(nick, s));
 			changedBuffer.Add(s);
             Header = channelName + " (" + (++newMesseges).ToString() + ")";
 			if (channelName == server.info.Name)
@@ -147,33 +145,35 @@ namespace IRC_Client_WPF {
 			dumpLine(s);
         }
 
-		private Paragraph formatLine(string line) {
+		private Paragraph formatLine(string nick, string line) {
 			Paragraph temp = new Paragraph();
 			try {
 				Brush color = flop ? Brushes.LightGray : Brushes.White;
 				flop = !flop;
 
-				var rDict = Util.regexMatch(line, @"^(?<time>\d{2,2}:\d{2,2}:\d{2,2} (?:AM|PM)\s+)(?<nick>\w*): (?<text>.*)$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
+				//var rDict = Util.regexMatch(line, @"^(?<time>\d{2,2}:\d{2,2}:\d{2,2} (?:AM|PM)\s+)(?<nick>\w*): (?<text>.*)$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
-				string times = String.Format("{0,-" + (12 + LongestNick).ToString() + " }", rDict ["time"]);
+				string times = String.Format("{0,-" + (12 + LongestNick).ToString() + " }", DateTime.Now.ToString("hh:mm:ss tt"));
 				TextBlock time = new TextBlock(new Run(times));
 				time.Foreground = Brushes.DarkGray;
-				time.Background = flop ? Brushes.LightGray : Brushes.White;
+				time.Background = color;
 				temp.Inlines.Add(time);
 
-				TextBlock nick = new TextBlock(new Run(rDict ["nick"]));
-				nick.Foreground = Brushes.Blue;
-				nick.Background = flop ? Brushes.LightGray : Brushes.White;
-				temp.Inlines.Add(nick);
+				//TODO: make this dissapear after swithicn channels.
+				bool hasMyName = line.Contains(server.info.Nick);
+				TextBlock nickBlock = new TextBlock(new Run(nick));
+				nickBlock.Foreground = Brushes.Blue;
+				nickBlock.Background = (hasMyName ? Brushes.MediumPurple : color);
+				temp.Inlines.Add(nickBlock);
 
 
 				TextBlock sep = new TextBlock(new Run(": "));
-				sep.Background = flop ? Brushes.LightGray : Brushes.White;
+				sep.Background = color;
 				Grid.SetColumn(sep, 2);
 				temp.Inlines.Add(sep);
 
-				TextBlock text = new TextBlock(new Run(rDict ["text"]));
-				text.Background = flop ? Brushes.LightGray : Brushes.White;
+				TextBlock text = new TextBlock(new Run(line));
+				text.Background = color;
 				text.Foreground = Brushes.Green;
 				text.TextWrapping = TextWrapping.Wrap;
 				temp.Inlines.Add(text);

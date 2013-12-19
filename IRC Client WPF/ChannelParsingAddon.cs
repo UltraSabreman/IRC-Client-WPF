@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Text.RegularExpressions;
 
 
 namespace IRC_Client_WPF {
@@ -11,47 +12,108 @@ namespace IRC_Client_WPF {
         private Dictionary<string, Action<string>> OutCommandDict = new Dictionary<string, Action<string>>();
 
         private void PopulateOutDict() {
-			OutCommandDict ["PRIVMSG"] = (Text) => {
-				if (isServChan()) return;
-                server.sendString("PRIVMSG " + channelName + " :" + Text + "\r\n");
-				server.parseIncoming(":" + server.info.Nick + "!local PRIVMSG " + channelName + " :" + Text + "\r\n");
-            };
-
-            OutCommandDict ["JOIN"] = (Text) => {
-                server.sendString("JOIN " + Text + "\r\n");
-            };
-
-            OutCommandDict ["CONNECT"] = (Text) => {
-                string [] split = Text.Split(":".ToCharArray());
-
-                if (split.Length == 1)
-                    server.ui.createServer(Text, Text, 6667);
-                else
-                    server.ui.createServer(Text, split [0], int.Parse(split [1]));
-            };
-
-            OutCommandDict ["PART"] = (Text) => {
-				if (isServChan()) return;
-
-				if (String.IsNullOrEmpty(Text))
-					server.sendString("PART " + channelName + "\r\n");
-				else
-					server.sendString("PART " + Text + "\r\n");
-
-				isConnected = false;
-            };
-
-			OutCommandDict ["TOPIC"] = (Text) => {
-				if (isServChan()) return;
-
-				server.sendString("TOPIC " + channelName + " :" + Text + "\r\n");
+			OutCommandDict ["NICK"] = (Params) => { 
+				if (!validParams("Nick", Params, 1)) { return; }
+				
+				server.sendString("NICK " + Params);
 			};
 
-			OutCommandDict ["CLOSE"] = (Text) => {
+			OutCommandDict ["OPER"] = (Params) => { 
+				if (!validParams("OPER", Params, 2)) { return; }
+
+				string [] args = Params.Split(" ".ToCharArray());
+				server.sendString("OPER " + args[0] + " " + args[1]);
+			};
+
+			OutCommandDict ["MODE"] = (Params) => {
+				server.sendString("MODE " + server.info.Nick + " " + Params);
+			};
+
+			OutCommandDict ["QUIT"] = (Params) => { 
+				if (!String.IsNullOrEmpty(Params))
+					server.sendString("QUIT " + Params);
+				else
+					server.sendString("QUIT");
+
+				//TODO: make sure this works.
+				server.ui.Close();
+			};
+
+			OutCommandDict ["JOIN"] = (Params) => { 
+				server.sendString("JOIN " + Params);
+			};
+
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+			OutCommandDict [""] = (Params) => { };
+
+
+			OutCommandDict ["CONNECT"] = (Params) => {
+				string [] split = Params.Split(":".ToCharArray());
+				string name = Params;
+				try {
+					name = Params.Split(" ".ToCharArray(), 1) [1];
+				} catch { }
+
+
+				if (split.Length == 1)
+					server.ui.createServer(name, Params, 6667);
+				else
+					server.ui.createServer(name, split [0], int.Parse(split [1]));
+			};
+
+			OutCommandDict ["PART"] = (Params) => {
+				Util.regexMatch(Params, @"^")
+				if (String.IsNullOrEmpty(Params))
+					server.sendString("PART " + channelName + "\r\n");
+				else
+					server.sendString("PART " + Params + "\r\n");
+
+				isConnected = false;
+			};
+
+			OutCommandDict ["PRIVMSG"] = (Params) => {
+				if (isServChan()) return;
+				server.sendString("PRIVMSG " + channelName + " :" + Params + "\r\n");
+				server.parseIncoming(":" + server.info.Nick + "!local PRIVMSG " + channelName + " :" + Params + "\r\n");
+            };
+
+ 
+
+			OutCommandDict ["TOPIC"] = (Params) => {
+				if (isServChan()) return;
+
+				server.sendString("TOPIC " + channelName + " :" + Params + "\r\n");
+			};
+
+			OutCommandDict ["CLOSE"] = (Params) => {
 				if (isServChan()) return;
 
 				if (isConnected)
-					OutCommandDict ["PART"](Text);
+					OutCommandDict ["PART"](null, null, Params);
 
 				server.closeChannel(this);
 			};
@@ -62,11 +124,23 @@ namespace IRC_Client_WPF {
 		/// </summary>
 		/// <returns>True if this channel is the server buffer..</returns>
 		private bool isServChan() {
-			if (channelName == server.info.Name) {
-				server.parseIncoming("PRIVMSG " + channelName + " :Has to be a Channel\r\n"); //TODO: find a more approriate messge type.
+			if (isServerChannel) {
+				server.sendString("PRIVMSG " + channelName + " :Has to be a Channel\r\n"); //TODO: find a more approriate messge type.
 				return true;
 			}
 			return false;
+		}
+
+		private bool validParams(string name, string args, int numOfParams) {
+			if (!String.IsNullOrEmpty(args) && args.Split(" ".ToCharArray()).Length == numOfParams)
+				return true;
+
+			server.printToServer("Error: to few argumnets for \"" + name + "\" command.");
+			return false;
+		}
+
+		private void badFormatError(string name) {
+			server.printToServer("Error: \"" + name + "\" command is improperly formatted.");
 		}
     }
 }

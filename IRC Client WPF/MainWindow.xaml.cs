@@ -69,7 +69,7 @@ namespace IRC_Client_WPF {
             e.channel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
         }
 
-        private Channel getSelectedChannel() {
+        public Channel getSelectedChannel() {
             object selected = UIServerList.SelectedItem;
             if (selected == null) return null;
 
