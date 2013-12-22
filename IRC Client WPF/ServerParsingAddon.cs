@@ -43,7 +43,44 @@ namespace IRC_Client_WPF {
 					}
 				}
 			};
-			InCommandDict [""] = (Prefix, Params, Trail) => { };
+
+			InCommandDict ["JOIN"] = (Prefix, Params, Trail) => {
+				//Params: channel name
+				//Trail: NULL
+
+				string nick = getNickFromPrefix(Prefix);
+
+				if (nick == info.Nick) {
+					foreach (Channel c in Items)
+						if (c.channelName == Params) {
+							if (!c.isConnected)
+								c.isConnected = true;
+
+							ExpandSubtree();
+							c.IsSelected = true;
+							return;
+						}
+
+					Channel newChan = new Channel(this, Params);
+
+					Items.Add(newChan);
+
+					if (!info.Channels.Contains(Params))
+						info.Channels.Add(Params);
+
+					if (OnChannelCreation != null)
+						OnChannelCreation(this, new ChannelCreatedEvent(newChan));
+				}
+			};
+
+			InCommandDict ["PRIVMSG"] = (Prefix, Params, Trail) => {
+				Channel target = channelByName(Params);
+				if (target != null) {
+					string nick = Prefix.Split("!".ToCharArray()) [0];
+					target.addLine(nick, Trail);
+					//colors: ♥04o♥08k♥09a♥11y♥12!♥
+				}
+			};
 			InCommandDict [""] = (Prefix, Params, Trail) => { };
 			InCommandDict [""] = (Prefix, Params, Trail) => { };
 			InCommandDict [""] = (Prefix, Params, Trail) => { };
@@ -108,9 +145,9 @@ namespace IRC_Client_WPF {
 			InCommandDict [""] = (Prefix, Params, Trail) => { };
 			InCommandDict [""] = (Prefix, Params, Trail) => { };
 			InCommandDict [""] = (Prefix, Params, Trail) => { };
-			InCommandDict [""] = (Prefix, Params, Trail) => { };
-			InCommandDict [""] = (Prefix, Params, Trail) => { };
-			InCommandDict [""] = (Prefix, Params, Trail) => { };
+			/*InCommandDict [Error.NoSuchChannel] = (Prefix, Params, Trail) => { printToServer(Params + " :No such channel"); };
+			InCommandDict [Error.ChannelIsFull] = (Prefix, Params, Trail) => { printToServer(Params + " :Cannot join channel (+l)"); };
+			InCommandDict [Error.InviteOnlyChan] = (Prefix, Params, Trail) => { printToServer(Params + " :Cannot join channel (+i)"); };
 			InCommandDict [Reply.UModeIs] = (Prefix, Params, Trail) => { printToServer("Mode is: " + Params); };
 			InCommandDict [Error.UsersDontMatch] = (Prefix, Params, Trail) => { printToServer(":Cannot change mode for other users"); };
 			InCommandDict [Error.UModeUnknownFlag] = (Prefix, Params, Trail) => { printToServer(":Unknown MODE flag"); };
@@ -126,7 +163,7 @@ namespace IRC_Client_WPF {
 			InCommandDict [Error.ErroneusNickname] = (Prefix, Params, Trail) => { printToServer(Params + " :Erroneous nickname"); };
 			InCommandDict [Error.UnAvailResource] = (Prefix, Params, Trail) => { printToServer(Params + " :Nick/channel is temporarily unavailable"); };
 			InCommandDict [Error.NickNameInUse] = (Prefix, Params, Trail) => { printToServer(Params + "Nickname is already in use"); };
-			InCommandDict [Error.NoNicknameGiven] = (Prefix, Params, Trail) => { printToServer(":No nickname given"); };
+			InCommandDict [Error.NoNicknameGiven] = (Prefix, Params, Trail) => { printToServer(":No nickname given"); };*/
 
 
 
@@ -135,14 +172,7 @@ namespace IRC_Client_WPF {
 				sendString("PING :" + Trail + "\r\n");
 			};
 
-			InCommandDict ["PRIVMSG"] = (Prefix, Params, Trail) => {
-				Channel target = channelByName(Params);
-				if (target != null) {
-					string nick = Prefix.Split("!".ToCharArray()) [0];
-					target.addLine(nick, Trail);
-					//colors: ♥04o♥08k♥09a♥11y♥12!♥
-				}
-			};
+
 
 			InCommandDict [Reply.NamReply] = (Prefix, Params, Trail) => {
 				try {
@@ -211,6 +241,19 @@ namespace IRC_Client_WPF {
 					OnChannelCreation(this, new ChannelCreatedEvent(newChan));
 			};*/
         }
+
+		private void printErrorToServer(string Params, string Trail) {
+			string [] test = Params.Split(" ".ToCharArray(), 1);
+			string newParams;
+			if (test.Length != 1) {
+				newParams = Params.Split(" ".ToCharArray(), 1) [1];
+				printToServer(newParams + ": " + Trail);
+
+			} else { 
+				//newParams = Params;
+				printToServer(Trail);
+			}
+		}
 
 		private string getNickFromPrefix(string prefix) {
 			try {

@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Shapes;
 using System.IO;
 
 //TOOD: proper public/provate shiz.
@@ -43,7 +44,7 @@ namespace IRC_Client_WPF {
 
 			//this trips when we init the first server (since it starts before the UI).
 			//Expands the tree and selects this newly made channel.
-			try { server.ExpandSubtree(); } catch (NullReferenceException e) { }
+			try { server.ExpandSubtree(); } catch (NullReferenceException) { }
 			IsSelected = true;
         }
 
@@ -51,28 +52,40 @@ namespace IRC_Client_WPF {
 			string logPath = "logs/" + channelName + ".txt";
 			if (File.Exists(logPath)) {
 				try {
-					//TODO: figure out how to read backwards.
-					StreamReader r = new StreamReader(logPath);
-					//r.BaseStream.Position = r.BaseStream.Length;
+					//TODO: load form options.
 					int numOfLines = 10;
 					
-					Paragraph temp = new Paragraph();
+					Paragraph tempParagraph = new Paragraph();
 
-					string test = r.ReadToEnd();
+					/*string test = r.ReadToEnd();
 					r.Close();
 					string [] lol = test.Split("\n".ToCharArray());
 
 					if (numOfLines > lol.Length)
-						foreach (string s in lol)
-							temp.Inlines.Add(new Run(s));
+						foreach (string s in lol) {
+							TextBlock tempBlock = new TextBlock { Text = s + "\n", Foreground = Brushes.LightGray };
+							tempParagraph.Inlines.Add(tempBlock);
+						}
 					else
-						for (int i = lol.Length - numOfLines; i < lol.Length; i++)
-							temp.Inlines.Add(new Run(lol[i]));
+						for (int i = lol.Length - numOfLines; i < lol.Length; i++) {
+							TextBlock tempBlock = new TextBlock { Text = lol [i], Foreground = Brushes.LightGray };
+							tempParagraph.Inlines.Add(tempBlock);
+						}
+					 */
+					List<string> file = Util.readFileBackwards(logPath, numOfLines);
+					foreach (string s in file) {
+						TextBlock tempBlock = new TextBlock { Text = s, Foreground = Brushes.LightGray };
+						tempParagraph.Inlines.Add(tempBlock);
+					}
+
+					buffer.Blocks.Add(tempParagraph);
 
 
-					buffer.Blocks.Add(temp);
+					Line line = new Line { X1 = 0, Y1 = 0, X2 = 1000, Y2 = 0, Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 2 };
+					InlineUIContainer tempInline = new InlineUIContainer(line);
+					buffer.Blocks.Add(new Paragraph(tempInline));
 					
-				} catch (AccessViolationException e) {
+				} catch (AccessViolationException) {
 					Util.PrintLine("ERROR: Log reading failed for " + channelName, ConsoleColor.Red);					
 				}
 			}
@@ -89,7 +102,7 @@ namespace IRC_Client_WPF {
 				StreamWriter fs = new StreamWriter(logPath, true, new ASCIIEncoding());
 				fs.WriteLine(whatToWrite);
 				fs.Close();
-			} catch (AccessViolationException e) {
+			} catch (AccessViolationException) {
 				Util.PrintLine("ERROR: Log writing failed for " + channelName, ConsoleColor.Red);
 			}
 		}
@@ -163,17 +176,17 @@ namespace IRC_Client_WPF {
 				bool hasMyName = line.Contains(server.info.Nick);
 				TextBlock nickBlock = new TextBlock(new Run(nick));
 				nickBlock.Foreground = Brushes.Blue;
-				nickBlock.Background = (hasMyName ? Brushes.MediumPurple : color);
+				//nickBlock.Background = (hasMyName ? Brushes.MediumPurple : color);
 				temp.Inlines.Add(nickBlock);
 
 
 				TextBlock sep = new TextBlock(new Run(": "));
-				sep.Background = color;
+				//sep.Background = color;
 				Grid.SetColumn(sep, 2);
 				temp.Inlines.Add(sep);
 
 				TextBlock text = new TextBlock(new Run(line));
-				text.Background = color;
+				//text.Background = color;
 				text.Foreground = Brushes.Green;
 				text.TextWrapping = TextWrapping.Wrap;
 				temp.Inlines.Add(text);

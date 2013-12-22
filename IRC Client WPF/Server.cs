@@ -102,17 +102,19 @@ namespace IRC_Client_WPF {
 		}
 
         public async void sendString(string s, bool parseNow = false) {
+			s += "\r\n";
+
 			if (parseNow) { 
 				parseIncoming(s);
 				return;
 			}
 
             UTF8Encoding encoding = new UTF8Encoding();
-            byte[] result = encoding.GetBytes(s + "\r\n");
+            byte[] result = encoding.GetBytes(s);
 
             try {
                 await nwStream.WriteAsync(result, 0, result.Length);
-            } catch (ObjectDisposedException e) {
+            } catch (ObjectDisposedException) {
                 return;
             }
 
@@ -128,7 +130,7 @@ namespace IRC_Client_WPF {
                 try {
 					//if (nwStream.DataAvailable)
 						bytes = await nwStream.ReadAsync(data, 0, data.Length);
-                } catch (ObjectDisposedException e) {
+                } catch (ObjectDisposedException) {
 					Util.Print(Name + ": Server Stream Closer", ConsoleColor.Red);
                     break;
                 }
@@ -160,18 +162,19 @@ namespace IRC_Client_WPF {
 
                 try {
                     InCommandDict [Command](Prefix, Params, Trail);
-                } catch (KeyNotFoundException e) {
-					printToServer(msg);
+                } catch (KeyNotFoundException) {
+					printErrorToServer(Params, Trail);
+					//printToServer(msg);
                 }
 
-			} catch (RegexMatchFailedException e) {
+			} catch (RegexMatchFailedException) {
 				Util.Print("Failed Msg Parse", ConsoleColor.DarkGreen);
 			}
             
         }
 
         public Channel channelByName(string name) {
-            if (name == "null")
+            if (name == info.Name)
                 return serverChannel;
 
             foreach (Channel c in Items)

@@ -70,6 +70,14 @@ namespace IRC_Client_WPF {
 			OutCommandDict [""] = (Params) => { };
 			OutCommandDict [""] = (Params) => { };
 
+			OutCommandDict ["CLOSE"] = (Params) => {
+				if (isServChan()) return;
+
+				if (isConnected)
+					OutCommandDict ["PART"](Params);
+
+				server.closeChannel(this);
+			};
 
 			OutCommandDict ["CONNECT"] = (Params) => {
 				string [] split = Params.Split(":".ToCharArray());
@@ -85,6 +93,14 @@ namespace IRC_Client_WPF {
 					server.ui.createServer(name, split [0], int.Parse(split [1]));
 			};
 
+			OutCommandDict ["PRIVMSG"] = (Params) => {
+				if (isServChan()) return;
+				server.sendString("PRIVMSG " + channelName + " :" + Params);
+				server.sendString(":" + server.info.Nick + "!local PRIVMSG " + channelName + " :" + Params, true);
+			};
+
+			/*
+
 			OutCommandDict ["PART"] = (Params) => {
 				Util.regexMatch(Params, @"^")
 				if (String.IsNullOrEmpty(Params))
@@ -95,11 +111,7 @@ namespace IRC_Client_WPF {
 				isConnected = false;
 			};
 
-			OutCommandDict ["PRIVMSG"] = (Params) => {
-				if (isServChan()) return;
-				server.sendString("PRIVMSG " + channelName + " :" + Params + "\r\n");
-				server.parseIncoming(":" + server.info.Nick + "!local PRIVMSG " + channelName + " :" + Params + "\r\n");
-            };
+			
 
  
 
@@ -109,14 +121,7 @@ namespace IRC_Client_WPF {
 				server.sendString("TOPIC " + channelName + " :" + Params + "\r\n");
 			};
 
-			OutCommandDict ["CLOSE"] = (Params) => {
-				if (isServChan()) return;
-
-				if (isConnected)
-					OutCommandDict ["PART"](null, null, Params);
-
-				server.closeChannel(this);
-			};
+*/
         }
 
 		/// <summary>

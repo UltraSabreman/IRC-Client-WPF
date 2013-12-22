@@ -81,7 +81,39 @@ namespace IRC_Client_WPF {
 			} catch { }
 		}
 
-		
+		/// <summary>
+		/// Reads numberOfLines lines backwards from the given file (but returns them
+		/// in the correct order).
+		/// </summary>
+		/// <param name="filePath"> the path to the file</param>
+		/// <param name="numberOfLines">number of lines to read</param>
+		/// <returns>the lines</returns>
+		public static List<string> readFileBackwards(string filePath, int numberOfLines) {
+			if (numberOfLines <= 0) return null;
+			List<string> retList = new List<string>();
+			StreamReader r = new StreamReader(filePath);
+
+			r.BaseStream.Seek(0, SeekOrigin.End); //seek to end.
+
+			int counter = numberOfLines + 1; //gotta add one so we read the last line as well.
+			try {
+				while (counter != 0) {
+					char curByte = (char)0;
+					while (curByte != '\n')
+						curByte = (char)r.BaseStream.Seek(-2, SeekOrigin.Current); //seek one back.
+
+					retList.Insert(0, r.ReadLine());
+
+					curByte = (char)0;
+					while (curByte != '\n')
+						curByte = (char)r.BaseStream.Seek(-1, SeekOrigin.Current); //seek one back.
+
+					counter--;
+				}
+			} catch { } finally { r.Close(); }
+
+			return retList;
+		}
 
         //From http://stackoverflow.com/questions/13951303/whats-the-easiest-way-to-clone-a-tabitem-in-wpf
         public static T TrycloneElement<T>(T orig) {
