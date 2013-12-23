@@ -54,31 +54,15 @@ namespace IRC_Client_WPF {
 				try {
 					//TODO: load form options.
 					int numOfLines = 10;
-					
-					Paragraph tempParagraph = new Paragraph();
-
-					/*string test = r.ReadToEnd();
-					r.Close();
-					string [] lol = test.Split("\n".ToCharArray());
-
-					if (numOfLines > lol.Length)
-						foreach (string s in lol) {
-							TextBlock tempBlock = new TextBlock { Text = s + "\n", Foreground = Brushes.LightGray };
-							tempParagraph.Inlines.Add(tempBlock);
-						}
-					else
-						for (int i = lol.Length - numOfLines; i < lol.Length; i++) {
-							TextBlock tempBlock = new TextBlock { Text = lol [i], Foreground = Brushes.LightGray };
-							tempParagraph.Inlines.Add(tempBlock);
-						}
-					 */
+	
 					List<string> file = Util.readFileBackwards(logPath, numOfLines);
 					foreach (string s in file) {
+						Paragraph tempParagraph = new Paragraph();
 						TextBlock tempBlock = new TextBlock { Text = s, Foreground = Brushes.LightGray };
 						tempParagraph.Inlines.Add(tempBlock);
+						buffer.Blocks.Add(tempParagraph);
 					}
 
-					buffer.Blocks.Add(tempParagraph);
 
 
 					Line line = new Line { X1 = 0, Y1 = 0, X2 = 1000, Y2 = 0, Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 2 };

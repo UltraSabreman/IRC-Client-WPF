@@ -91,28 +91,43 @@ namespace IRC_Client_WPF {
 		public static List<string> readFileBackwards(string filePath, int numberOfLines) {
 			if (numberOfLines <= 0) return null;
 			List<string> retList = new List<string>();
-			StreamReader r = new StreamReader(filePath);
 
+			StreamReader r = new StreamReader(filePath);
+			string all = r.ReadToEnd();
 			r.BaseStream.Seek(0, SeekOrigin.End); //seek to end.
 
-			int counter = numberOfLines + 1; //gotta add one so we read the last line as well.
+			int counter = numberOfLines; //gotta add one so we read the last line as well.
 			try {
 				while (counter != 0) {
-					char curByte = (char)0;
-					while (curByte != '\n')
-						curByte = (char)r.BaseStream.Seek(-2, SeekOrigin.Current); //seek one back.
+					int bytes = 0;
+					while (streamPeek(r.BaseStream) != '\n') {
+						r.BaseStream.Position -= 1;
+						bytes++;
+					}
 
-					retList.Insert(0, r.ReadLine());
-
-					curByte = (char)0;
-					while (curByte != '\n')
-						curByte = (char)r.BaseStream.Seek(-1, SeekOrigin.Current); //seek one back.
+					long newPos = (r.BaseStream.Position++ - 1);
+					retList.Insert(0, streamRead(r.BaseStream, bytes));
+					r.BaseStream.Position = newPos;
 
 					counter--;
 				}
 			} catch { } finally { r.Close(); }
 
 			return retList;
+		}
+
+		public static char streamPeek(Stream s) {
+			Byte [] c = new Byte [1];
+			s.Read(c, 0, 1);
+			s.Position--; //seek one back.
+
+			return Encoding.UTF8.GetString(c, 0, 1)[0];
+		}
+
+		public static string streamRead(Stream s, int numOfBytes) {
+			Byte [] buffer = new Byte [numOfBytes];
+			s.Read(buffer, 0, buffer.Length);
+			return Encoding.UTF8.GetString(buffer, 0, buffer.Length).Trim("\r\n\0".ToCharArray());
 		}
 
         //From http://stackoverflow.com/questions/13951303/whats-the-easiest-way-to-clone-a-tabitem-in-wpf
