@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +28,7 @@ namespace IRC_Client_WPF {
 		public string UserMode = "";
 	}
 
-    public partial class Server : TreeViewItem {
+    public partial class UIServer : TreeViewItem {
         public MainWindow ui;
         private TcpClient connection;
         private NetworkStream nwStream;
@@ -37,9 +37,9 @@ namespace IRC_Client_WPF {
         ////////////////////////////////////
 		public bool IsConnected { get; private set; }
         public event EventHandler<ChannelCreatedEvent> OnChannelCreation;
-        public Channel serverChannel;
+        public UIChannel serverChannel;
 
-		public Server(ServerInfo s, MainWindow win) {		
+		public UIServer(ServerInfo s, MainWindow win) {		
 			info = s; ui = win;
 
 			initServer();
@@ -48,7 +48,7 @@ namespace IRC_Client_WPF {
 			}
 		}
 
-        public Server(string inName, string inAdress, int inPort, MainWindow win) {
+        public UIServer(string inName, string inAdress, int inPort, MainWindow win) {
             ui = win;
 			info = new ServerInfo();
 
@@ -70,7 +70,7 @@ namespace IRC_Client_WPF {
 
 			//TODO: get user data form somewhere
 			Random getNewPass = new Random();
-			serverChannel = new Channel(this, info.Name, true);
+			serverChannel = new UIChannel(this, info.Name, true);
 			Header = serverChannel.Header;
 
 			connection = new TcpClient(info.Address, info.Port);
@@ -96,7 +96,7 @@ namespace IRC_Client_WPF {
             //TODO: more stuff here, ie: write channles and buffers to file.
         }
 
-		public void closeChannel(Channel c) {
+		public void closeChannel(UIChannel c) {
 			if (Items.Contains(c))
 				Items.Remove(c);
 		}
@@ -151,7 +151,7 @@ namespace IRC_Client_WPF {
             if (msg == null || msg == "") return;
 
             Console.WriteLine(msg);
-            //parses the messege with regex
+            //parses the message with regex
             try {
                 var rDict = Util.regexMatch(msg, @"^(:(?<prefix>\S+) )?(?<command>\S+)( (?!:)(?<params>.+?))?( :(?<trail>.+))?$", RegexOptions.ExplicitCapture | RegexOptions.Compiled);
 
@@ -173,11 +173,11 @@ namespace IRC_Client_WPF {
             
         }
 
-        public Channel channelByName(string name) {
+        public UIChannel channelByName(string name) {
             if (name == info.Name)
                 return serverChannel;
 
-            foreach (Channel c in Items)
+            foreach (UIChannel c in Items)
                 if (c.channelName == name)
                     return c;
             return null;
@@ -187,20 +187,21 @@ namespace IRC_Client_WPF {
 			sendString(":--- PRIVMSG " + serverChannel.channelName + " :" + messge, true);
 		}
 
-		public void printToCurChannel(string messege) {
-			Channel curChan = getSelectedChannel();
+		public void printToCurChannel(string message) {
+			UIChannel curChan = getSelectedChannel();
 			if (curChan != null)
-				sendString(":--- PRIVMSG " + curChan.channelName + " :" + messege, true);
+				sendString(":--- PRIVMSG " + curChan.channelName + " :" + message, true);
 		}
 
-		private Channel getSelectedChannel() {
+		private UIChannel getSelectedChannel() {
 			if (IsSelected || serverChannel.IsSelected)
 				return serverChannel;
 
-			foreach (Channel c in Items)
+			foreach (UIChannel c in Items)
 				if (c.IsSelected)
 					return c;
 			return null;
 		}
     }
 }
+*/

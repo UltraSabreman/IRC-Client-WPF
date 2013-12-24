@@ -49,7 +49,7 @@ namespace IRC_Client_WPF {
         public void changeChannel(object o, RoutedPropertyChangedEventArgs<Object> e) {
 			UINickList.Items.Clear();
 
-			Channel c = getSelectedChannel();
+			UIChannel c = getSelectedChannel();
 			if (c == null) return;
 			foreach (string s in c.nicks)
 				UINickList.Items.Add(s);
@@ -69,19 +69,19 @@ namespace IRC_Client_WPF {
             e.channel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
         }
 
-        public Channel getSelectedChannel() {
+        public UIChannel getSelectedChannel() {
             object selected = UIServerList.SelectedItem;
             if (selected == null) return null;
 
-            if (selected.GetType() == typeof(Server))
-                return (selected as Server).serverChannel;
+            if (selected.GetType() == typeof(UIServer))
+                return (selected as UIServer).serverChannel;
             else 
-                return (selected as Channel);
+                return (selected as UIChannel);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
 			reader.Servers.Clear();
-			foreach (Server s in UIServerList.Items) {
+			foreach (UIServer s in UIServerList.Items) {
 				reader.Servers.Add(s.disconnect());
 			}
 
@@ -91,7 +91,7 @@ namespace IRC_Client_WPF {
 
         private void InputBox_KeyUp(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter) {
-                Channel cur = getSelectedChannel();
+                UIChannel cur = getSelectedChannel();
 
                 if (cur != null)
                     cur.parseOutgoing(new TextRange(UIInputBox.Document.ContentStart, UIInputBox.Document.ContentEnd).Text);
@@ -115,7 +115,7 @@ namespace IRC_Client_WPF {
 
 		private void createServer(ServerInfo si) {
 			try {
-				Server temp = new Server(si, this);
+				UIServer temp = new UIServer(si, this);
 				temp.OnChannelCreation += new EventHandler<ChannelCreatedEvent>(channelCreated);
 				temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
 
@@ -142,7 +142,7 @@ namespace IRC_Client_WPF {
 		}
 		public void createServer(string Name, string Adress, int port) {
 			try {
-				Server temp = new Server(Name, Adress, port, this);
+				UIServer temp = new UIServer(Name, Adress, port, this);
 				temp.OnChannelCreation += new EventHandler<ChannelCreatedEvent>(channelCreated);
 				temp.serverChannel.OnUpdate += new EventHandler<ChannelUpdate>(channelUpdated);
 
@@ -155,7 +155,7 @@ namespace IRC_Client_WPF {
 		}
 
 		private void UIChanTopic_KeyUp(object sender, KeyEventArgs e) {
-			Channel c = getSelectedChannel();
+			UIChannel c = getSelectedChannel();
 			if (c == null) return;
 
 			if (e.Key == Key.Enter) {

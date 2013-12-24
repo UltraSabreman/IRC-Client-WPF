@@ -92,26 +92,27 @@ namespace IRC_Client_WPF {
 			if (numberOfLines <= 0) return null;
 			List<string> retList = new List<string>();
 
-			StreamReader r = new StreamReader(filePath);
-			string all = r.ReadToEnd();
-			r.BaseStream.Seek(0, SeekOrigin.End); //seek to end.
+			using (StreamReader r = new StreamReader(filePath)) {
+				string all = r.ReadToEnd();
+				r.BaseStream.Seek(0, SeekOrigin.End); //seek to end.
 
-			int counter = numberOfLines; //gotta add one so we read the last line as well.
-			try {
-				while (counter != 0) {
-					int bytes = 0;
-					while (streamPeek(r.BaseStream) != '\n') {
-						r.BaseStream.Position -= 1;
-						bytes++;
+				int counter = numberOfLines; //gotta add one so we read the last line as well.
+				try {
+					while (counter != 0) {
+						int bytes = 0;
+						while (streamPeek(r.BaseStream) != '\n') {
+							r.BaseStream.Position -= 1;
+							bytes++;
+						}
+
+						long newPos = (r.BaseStream.Position++ - 1);
+						retList.Insert(0, streamRead(r.BaseStream, bytes));
+						r.BaseStream.Position = newPos;
+
+						counter--;
 					}
-
-					long newPos = (r.BaseStream.Position++ - 1);
-					retList.Insert(0, streamRead(r.BaseStream, bytes));
-					r.BaseStream.Position = newPos;
-
-					counter--;
-				}
-			} catch { } finally { r.Close(); }
+				} catch { }
+			}
 
 			return retList;
 		}

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 
 namespace IRC_Client_WPF {
-    public partial class Server : TreeViewItem {
+	public partial class Server {
         private Dictionary<string, Action<string, string, string>> InCommandDict = new Dictionary<string, Action<string, string, string>>();
 
         private void PopulateInDict() {
@@ -17,30 +17,18 @@ namespace IRC_Client_WPF {
 				//Trail: null
 				string ourNick = getNickFromPrefix(Prefix);
 
-				foreach (Channel c in Items) {
-					if (c.nicks.Contains(ourNick)) {
-						c.addLine(ourNick, "Is now known as:" + Params);
-
-						c.nicks.Remove(ourNick);
-						c.nicks.Add(Params);
-						c.nicks.Sort();
-						c.updateLongestNick();
-					}
+				foreach (Channel c in channels) {
+					if (c.TryRenameNick(ourNick, Params)) return; 
 				}
 			};
 
 			InCommandDict ["QUIT"] = (Prefix, Params, Trail) => { 
 				//Params: null
-				//Trail: custom messege;
+				//Trail: custom message;
 
 				string quitter = getNickFromPrefix(Prefix);
-				foreach (Channel c in Items) {
-					if (c.nicks.Contains(quitter)) {
-						c.addLine("<==", quitter + " disconnected. \"" + Trail + "\"");
-						c.nicks.Remove(quitter);
-						c.nicks.Sort();
-						c.updateLongestNick();
-					}
+				foreach (Channel c in channels) {
+					if (c.TryUserQuit(quitter, Trail)) return;
 				}
 			};
 
@@ -49,38 +37,26 @@ namespace IRC_Client_WPF {
 				//Trail: NULL
 
 				string nick = getNickFromPrefix(Prefix);
-
-				if (nick == info.Nick) {
-					foreach (Channel c in Items)
-						if (c.channelName == Params) {
-							if (!c.isConnected)
-								c.isConnected = true;
-
-							ExpandSubtree();
-							c.IsSelected = true;
-							return;
-						}
-
-					Channel newChan = new Channel(this, Params);
-
-					Items.Add(newChan);
-
-					if (!info.Channels.Contains(Params))
-						info.Channels.Add(Params);
-
-					if (OnChannelCreation != null)
-						OnChannelCreation(this, new ChannelCreatedEvent(newChan));
-				}
+				
+				//if im connecting to something
+				if (nick == Info.Nick || String.IsNullOrEmpty(nick)) {
+					joinChannel(Params);
+				} else
+					foreach (Channel c in channels)
+						if (c.Name == Params)
+							c.UserConnect(Params);
+				
 			};
 
 			InCommandDict ["PRIVMSG"] = (Prefix, Params, Trail) => {
 				Channel target = channelByName(Params);
 				if (target != null) {
 					string nick = Prefix.Split("!".ToCharArray()) [0];
-					target.addLine(nick, Trail);
+					target.PrintToChannel(nick, Trail);
 					//colors: ♥04o♥08k♥09a♥11y♥12!♥
 				}
 			};
+
 			InCommandDict [""] = (Prefix, Params, Trail) => { };
 			InCommandDict [""] = (Prefix, Params, Trail) => { };
 			InCommandDict [""] = (Prefix, Params, Trail) => { };

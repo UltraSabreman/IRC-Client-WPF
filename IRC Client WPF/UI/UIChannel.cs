@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,13 +13,13 @@ using System.IO;
 
 //TOOD: proper public/provate shiz.
 namespace IRC_Client_WPF {
-    public partial class Channel : TreeViewItem {
+    public partial class UIChannel : TreeViewItem {
         public List<string> nicks = new List<string>();
 		public List<string> changedBuffer = new List<string>();
 		public FlowDocument buffer = new FlowDocument();
 
-		public int newMesseges = 0;
-        public Server server;
+		public int newMessages = 0;
+        public UIServer server;
 		public bool isServerChannel = false;
 		public int LongestNick = 0;
         public string channelName;
@@ -32,7 +32,7 @@ namespace IRC_Client_WPF {
 
         public event EventHandler<ChannelUpdate> OnUpdate;
 
-        public Channel(Server s, string name, bool local = false) {
+        public UIChannel(UIServer s, string name, bool local = false) {
             server = s;
             channelName = name;
             Header = name;
@@ -105,7 +105,7 @@ namespace IRC_Client_WPF {
 						/*if (String.IsNullOrEmpty(Command))
 							OutCommandDict [Params](null);
 						else
-							OutCommandDict [Command](Text);*/
+							OutCommandDict [Command](Text);*//*
 						OutCommandDict [Command](Params);
 					} catch (KeyNotFoundException) {
 						//server.serverChannel.addLine("Invalid Command");
@@ -132,7 +132,7 @@ namespace IRC_Client_WPF {
         public void addLine(string nick, string s) {
 			buffer.Blocks.Add(formatLine(nick, s));
 			changedBuffer.Add(s);
-            Header = channelName + " (" + (++newMesseges).ToString() + ")";
+            Header = channelName + " (" + (++newMessages).ToString() + ")";
 			if (channelName == server.info.Name)
 				server.Header = Header;
 
@@ -182,7 +182,7 @@ namespace IRC_Client_WPF {
 		}
 
         public void sync() {
-			newMesseges = 0;
+			newMessages = 0;
             Header = channelName;
 			changedBuffer.Clear();
 			if (channelName == server.info.Name)
@@ -192,3 +192,4 @@ namespace IRC_Client_WPF {
        
     }
 }
+*/
