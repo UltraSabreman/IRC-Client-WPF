@@ -14,3 +14,5 @@ C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\IRC Clien
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\Newtonsoft.Json.pdb
 C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\UI\MainWindow.baml
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client WPF\obj\Debug\UI\MainWindow.g.cs

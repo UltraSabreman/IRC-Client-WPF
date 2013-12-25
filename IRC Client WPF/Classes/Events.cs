@@ -18,6 +18,11 @@ namespace IRC_Client_WPF {
 		public ChannelUpdate(Channel c) { this.Channel = c; }
 	}
 
+	public class LineAdded : EventArgs {
+		public readonly ChatLine Line;
+		public LineAdded(ChatLine l) { Line = l; }
+	}
+	
     public class ReciveMessage : EventArgs {
 		public readonly string Msg;
 		public ReciveMessage(string s) { Msg = s; }

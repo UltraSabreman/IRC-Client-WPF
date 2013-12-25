@@ -27,7 +27,7 @@ namespace IRC_Client_WPF {
 				createServer(si);
 			}
 
-            UIServerList.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(changeChannel);
+			UIServerList.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(UIServerList_SelctionChanged);
         }
 
         public void channelUpdated(object o, ChannelUpdate e) {
@@ -46,7 +46,7 @@ namespace IRC_Client_WPF {
 			UIChanTopic.Text = e.channel.topic;
         }
 
-        public void changeChannel(object o, RoutedPropertyChangedEventArgs<Object> e) {
+		public void UIServerList_SelctionChanged(object o, RoutedPropertyChangedEventArgs<Object> e) {
 			UINickList.Items.Clear();
 
 			UIChannel c = getSelectedChannel();

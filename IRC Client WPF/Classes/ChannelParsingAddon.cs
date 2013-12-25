@@ -104,7 +104,7 @@ namespace IRC_Client_WPF {
 		}
 
 		private void sendMessage(string s, bool h = false) {
-			if (OnSend != null) OnSend(this, new SendMessage(s, h));
+			if (MessageDispached != null) MessageDispached(this, new SendMessage(s, h));
 		}
 
     }

@@ -230,7 +230,9 @@ namespace IRC_Client_WPF {
 				printToServer(Trail);
 			}
 		}
-
+		public void printToServer(string message) {
+			serverChannel.PrintToChannel("---", message, ChatLine.MessageType.Error);
+		}
 		private string getNickFromPrefix(string prefix) {
 			try {
 				var d = Util.regexMatch(prefix, @"^(?<name>[^!@\0\n\r :]+)(!(?<user>[^!@\0\n\r :]+))?(@(?<host>[^!@\0\n\r :]+))?$", RegexOptions.Compiled | RegexOptions.ExplicitCapture);

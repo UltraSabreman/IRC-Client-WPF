@@ -32,7 +32,6 @@ namespace IRC_Client_WPF {
 		private Channel serverChannel;
 		private List<Channel> channels = new List<Channel>();
 
-
 		public event EventHandler<ChannelCreatedEvent> OnChannelCreation;
 		public event EventHandler<ChannelUpdate> OnChannelUpdate;
 
@@ -95,7 +94,8 @@ namespace IRC_Client_WPF {
 
 			//make a new channel
 			Channel newChan = new Channel(Info, name);
-			newChan.OnSend += new EventHandler<SendMessage>(OnMessageSend);
+			newChan.MessageDispached += new EventHandler<SendMessage>(handleOutgoingMessage);
+			newChan.AddedLineToChannel += new EventHandler<LineAdded>(handleIncomingMessage);
 
 			channels.Add(newChan);
 
@@ -118,7 +118,16 @@ namespace IRC_Client_WPF {
             }
         }
 
-		private void OnMessageSend(object o, SendMessage m) {
+		//TODO: do we keep this?
+		private void handleIncomingMessage(object o, LineAdded m) {
+			Channel c = o as Channel;
+			if (c == null) return;
+
+			if (OnChannelUpdate != null)
+				OnChannelUpdate(this, new ChannelUpdate(c));
+		}
+
+		private void handleOutgoingMessage(object o, SendMessage m) {
 			Channel c = o as Channel;
 			if (c == null) return;
 
@@ -211,9 +220,5 @@ namespace IRC_Client_WPF {
                     return c;
             return null;
         }
-
-		public void printToServer(string messge) {
-			parseRecivedString(":--- PRIVMSG " + Info.Name + " :" + messge);
-		}
     }
 }

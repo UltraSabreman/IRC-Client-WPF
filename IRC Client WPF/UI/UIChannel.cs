@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,110 +14,15 @@ using System.IO;
 //TOOD: proper public/provate shiz.
 namespace IRC_Client_WPF {
     public partial class UIChannel : TreeViewItem {
-        public List<string> nicks = new List<string>();
-		public List<string> changedBuffer = new List<string>();
-		public FlowDocument buffer = new FlowDocument();
+		public FlowDocument UIBuffer = new FlowDocument();
 
-		public int newMessages = 0;
-        public UIServer server;
-		public bool isServerChannel = false;
-		public int LongestNick = 0;
-        public string channelName;
-		public string topic = "";
-
-		public bool isAdmin = false;
-		public bool isConnected = false;
-
-		private bool flop = false; //determiens background for chat box.
-
-        public event EventHandler<ChannelUpdate> OnUpdate;
-
-        public UIChannel(UIServer s, string name, bool local = false) {
-            server = s;
-            channelName = name;
-            Header = name;
-            PopulateOutDict();
-			loadBacklog();
-			isConnected = true;
-			if (local)
-				isServerChannel = true;
-
-			//this trips when we init the first server (since it starts before the UI).
-			//Expands the tree and selects this newly made channel.
-			try { server.ExpandSubtree(); } catch (NullReferenceException) { }
-			IsSelected = true;
+        public UIChannel(Channel c) {
+            Header = c.Name;
+			c.AddedLineToChannel += new EventHandler<LineAdded>(updateChannelUI);
         }
 
-		public void loadBacklog() {
-			string logPath = "logs/" + channelName + ".txt";
-			if (File.Exists(logPath)) {
-				try {
-					//TODO: load form options.
-					int numOfLines = 10;
-	
-					List<string> file = Util.readFileBackwards(logPath, numOfLines);
-					foreach (string s in file) {
-						Paragraph tempParagraph = new Paragraph();
-						TextBlock tempBlock = new TextBlock { Text = s, Foreground = Brushes.LightGray };
-						tempParagraph.Inlines.Add(tempBlock);
-						buffer.Blocks.Add(tempParagraph);
-					}
+		private void updateChannelUI(object o, LineAdded m) {
 
-
-
-					Line line = new Line { X1 = 0, Y1 = 0, X2 = 1000, Y2 = 0, Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 2 };
-					InlineUIContainer tempInline = new InlineUIContainer(line);
-					buffer.Blocks.Add(new Paragraph(tempInline));
-					
-				} catch (AccessViolationException) {
-					Util.PrintLine("ERROR: Log reading failed for " + channelName, ConsoleColor.Red);					
-				}
-			}
-		}
-
-		public void dumpLine(string whatToWrite) {
-			string logPath = "logs/" + channelName + ".txt";
-			if (!Directory.Exists("logs"))
-				Directory.CreateDirectory("logs");
-			if (!File.Exists(logPath)) 
-				File.CreateText(logPath);
-			
-			try {
-				StreamWriter fs = new StreamWriter(logPath, true, new ASCIIEncoding());
-				fs.WriteLine(whatToWrite);
-				fs.Close();
-			} catch (AccessViolationException) {
-				Util.PrintLine("ERROR: Log writing failed for " + channelName, ConsoleColor.Red);
-			}
-		}
-
-		public void parseOutgoing(string s) {
-			if (s == "" || s == null) return;
-
-			if (s.StartsWith("/")) {
-				try {
-					var rDict = Util.regexMatch(s, @"^(/(?<command>\S+)?)( (?<params>.+))?", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled);
-
-					string Command = rDict ["command"].ToUpper();
-					string Params = rDict ["params"].ToUpper();
-
-					try {
-						/*if (String.IsNullOrEmpty(Command))
-							OutCommandDict [Params](null);
-						else
-							OutCommandDict [Command](Text);*//*
-						OutCommandDict [Command](Params);
-					} catch (KeyNotFoundException) {
-						//server.serverChannel.addLine("Invalid Command");
-						//Silenty continue.
-						//TODO: let the user know it failed?
-					}
-				} catch (RegexMatchFailedException) {
-					Util.Print(ConsoleColor.DarkGreen, "Failed OutMsg Parse: ", ConsoleColor.White, s, "\n");
-				}
-
-			} else
-				OutCommandDict ["PRIVMSG"](s);
 		}
 
         public void updateLongestNick() {
@@ -192,4 +97,3 @@ namespace IRC_Client_WPF {
        
     }
 }
-*/

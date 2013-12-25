@@ -60,8 +60,8 @@ namespace IRC_Client_WPF {
 
 		private ServerInfo serverInfo = null;
 
-		public event EventHandler<ReciveMessage> OnRecive;
-		public event EventHandler<SendMessage> OnSend;
+		public event EventHandler<SendMessage> MessageDispached;
+		public event EventHandler<LineAdded> AddedLineToChannel;
 
 		public Channel(ServerInfo inInfo, string inName, bool local = false) {
 			serverInfo = inInfo;
@@ -142,17 +142,12 @@ namespace IRC_Client_WPF {
 		}
 
 
-
-
-
-
-
 		private void addLine(ChatLine l) {
 			buffer.Add(l);
 			deltaBuffer.Add(l);
 
-			if (OnRecive != null)
-				OnRecive(this, new ReciveMessage(l.ToString()));
+			if (AddedLineToChannel != null)
+				AddedLineToChannel(this, new LineAdded(l));
 
 			writeLineToLog(l.ToString());
 		}

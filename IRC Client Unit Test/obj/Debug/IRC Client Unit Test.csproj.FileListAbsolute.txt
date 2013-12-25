@@ -1,0 +1,10 @@
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\bin\Debug\IRC Client Unit Test.dll
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\bin\Debug\IRC Client Unit Test.pdb
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\bin\Debug\IRC Client WPF.exe
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\bin\Debug\IRC Client WPF.pdb
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\obj\Debug\IRC Client Unit Test.csprojResolveAssemblyReference.cache
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\obj\Debug\IRC Client Unit Test.dll
+C:\Users\Andrey\Documents\Code\IRC-Client-WPF\IRC Client Unit Test\obj\Debug\IRC Client Unit Test.pdb

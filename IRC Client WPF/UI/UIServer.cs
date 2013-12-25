@@ -1,4 +1,4 @@
-﻿/*using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,17 +16,6 @@ using System.IO;
 
 
 namespace IRC_Client_WPF {
-	public class ServerInfo {
-		public string Name = "";
-		public string Address = "";
-		public int Port = 0;
-		public List<string> Channels = new List<string>();
-
-		public string Nick = "";
-		public string RealName = "";
-		public string UserName = "";
-		public string UserMode = "";
-	}
 
     public partial class UIServer : TreeViewItem {
         public MainWindow ui;
@@ -204,4 +193,3 @@ namespace IRC_Client_WPF {
 		}
     }
 }
-*/
